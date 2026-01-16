@@ -3,231 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informe Ejecutivo | Academia Quijano</title>
+    <title>Dashboard Estratégico | Academia Quijano</title>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <style>
-        /* --- ESTILOS BASE (PANTALLA) --- */
         :root {
             --primary: #0a2540;
             --accent: #FFD700;
-            --bg-screen: #f1f5f9;
-            --text-body: #334155;
+            --bg: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.8);
+            --shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
 
         body {
             font-family: 'Manrope', sans-serif;
             margin: 0;
-            padding: 30px;
-            background-color: var(--bg-screen);
-            color: var(--text-body);
+            background-color: var(--bg);
+            color: var(--primary);
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
         }
 
-        .dashboard-wrapper {
+        /* DISEÑO DE CRISTAL (GLASSMORPHISM) */
+        .dashboard-container {
             width: 100%;
-            max-width: 900px;
-            background: white;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            max-width: 1000px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
             padding: 40px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255,255,255,0.3);
+            margin-top: 20px;
         }
 
-        /* Header Pantalla */
-        .screen-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 2px solid #e2e8f0; padding-bottom: 20px; }
-        .screen-header h1 { margin: 0; font-size: 24px; color: var(--primary); }
-        .logo-img { height: 50px; width: auto; }
-
-        /* KPIs */
-        .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
-        .kpi-card { background: #f8fafc; padding: 20px; border-radius: 16px; text-align: center; border: 1px solid #e2e8f0; }
-        .kpi-val { display: block; font-size: 32px; font-weight: 800; color: var(--primary); }
-        .kpi-lbl { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #64748b; font-weight: 600; }
-
-        /* Contenido Principal */
-        .main-content { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start; }
-        .chart-container { background: white; border: 1px solid #e2e8f0; border-radius: 20px; padding: 20px; }
-        
-        .analysis-container { background: var(--primary); color: white; padding: 30px; border-radius: 20px; }
-        .verif-box { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); }
-        .verif-code { font-family: monospace; font-size: 18px; color: var(--accent); font-weight: 800; letter-spacing: 2px; }
-
-        /* Botón de Impresión (Solo Pantalla) */
-        .btn-print-floating {
-            position: fixed; bottom: 30px; right: 30px;
-            background: var(--accent); color: var(--primary);
-            border: none; padding: 15px 30px; border-radius: 50px;
-            font-weight: 800; font-size: 14px; cursor: pointer;
-            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
-            transition: transform 0.2s;
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
         }
-        .btn-print-floating:hover { transform: scale(1.05); }
 
-        /* Elementos exclusivos de Impresión (ocultos en pantalla) */
-        .print-only-header, .print-cover-page { display: none; }
+        .logo { width: 80px; }
 
-        /* --- 🖨️ ESTILOS DE IMPRESIÓN PROFESIONAL (AQUÍ ESTÁ LA MAGIA) --- */
-        @media print {
-            @page { margin: 1.5cm; size: A4; }
-            body { padding: 0; background: white; }
-            .dashboard-wrapper { box-shadow: none; padding: 0; max-width: 100%; border-radius: 0; }
-            .btn-print-floating { display: none !important; } /* Ocultar botón */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
 
-            /* Forzar colores exactos */
-            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        .kpi-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            border-bottom: 4px solid var(--accent);
+        }
 
-            /* --- PÁGINA 1: PORTADA --- */
-            .screen-header { display: none; } /* Ocultar header de pantalla */
-            
-            .print-cover-page {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                height: 90vh; /* Ocupa casi toda la primera hoja */
-                text-align: center;
-                page-break-after: always; /* FUERZA EL SALTO DE PÁGINA */
-            }
+        .kpi-card:hover { transform: translateY(-10px); }
+        .kpi-val { font-size: 36px; font-weight: 800; display: block; color: var(--primary); }
+        .kpi-label { font-size: 11px; text-transform: uppercase; font-weight: 700; color: #64748b; letter-spacing: 1px; }
 
-            .print-logo-big { height: 120px; margin-bottom: 30px; }
-            .print-title { font-size: 36px; color: var(--primary); margin: 0 0 10px 0; text-transform: uppercase; }
-            .print-subtitle { font-size: 18px; color: #64748b; margin-bottom: 50px; }
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
 
-            /* KPIs en Portada */
-            .kpi-row { gap: 30px; margin-bottom: 0; }
-            .kpi-card { border: 2px solid var(--primary); background: white; }
+        @media (max-width: 800px) {
+            .main-content { grid-template-columns: 1fr; }
+        }
 
-            /* --- PÁGINA 2: DETALLES --- */
-            .main-content { display: block; /* Una columna para impresión */ margin-top: 30px; }
-            .chart-container { border: none; padding: 0; margin-bottom: 40px; page-break-inside: avoid; }
-            
-            .analysis-container { 
-                background: white !important; /* Fondo blanco para ahorrar tinta intensa */
-                color: var(--primary) !important; 
-                border: 2px solid var(--primary);
-            }
-            .verif-box { border-top: 2px solid #e2e8f0; }
-            .verif-code { color: var(--primary); }
-            .analysis-title { color: var(--accent) !important; font-weight: 800; }
+        .chart-box {
+            background: white;
+            padding: 20px;
+            border-radius: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .action-matrix {
+            background: var(--primary);
+            color: white;
+            padding: 25px;
+            border-radius: 25px;
+        }
+
+        .callout {
+            background: #fff1f2;
+            border-left: 5px solid #e11d48;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 30px;
+            font-weight: 600;
+            color: #9f1239;
+        }
+
+        .btn-print {
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-print:hover { background: #eab308; }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 10px;
+            color: #94a3b8;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <div class="dashboard-wrapper">
-        
-        <header class="screen-header">
-            <div>
-                <h1>Centro de Mando Académico</h1>
-                <p id="sub-info-screen" style="margin: 5px 0 0 0; color: #64748b; font-weight: 600;">Cargando datos...</p>
+    <div class="dashboard-container">
+        <header>
+            <div style="text-align: left;">
+                <h1 style="margin:0; font-size: 24px;">Centro de Mando Académico</h1>
+                <p id="sub-info" style="margin:5px 0 0 0; font-weight: 600; color: #64748b;">Cargando reporte...</p>
             </div>
-            <img src="https://raw.githubusercontent.com/profeangel96-bit/PLANTILLA/main/Gemini_Generated_Image_24c84124c84124c8.png" class="logo-img">
+            <img src="https://raw.githubusercontent.com/profeangel96-bit/PLANTILLA/main/Gemini_Generated_Image_24c84124c84124c8.png" class="logo">
         </header>
 
-        <div class="print-cover-page">
-            <img src="https://raw.githubusercontent.com/profeangel96-bit/PLANTILLA/main/Gemini_Generated_Image_24c84124c84124c8.png" class="print-logo-big">
-            <h1 class="print-title">Informe Ejecutivo de Resultados</h1>
-            <p class="print-subtitle" id="print-sub-info">Simulacro Oficial - Academia Quijano</p>
-            
-            </div>
-
-        <div class="kpi-row">
-            <div class="kpi-card">
-                <span class="kpi-val" id="kpi-avg">0</span>
-                <span class="kpi-lbl">Promedio Global</span>
-            </div>
-            <div class="kpi-card" style="border-color: #059669;">
-                <span class="kpi-val" id="kpi-exc" style="color: #059669;">0%</span>
-                <span class="kpi-lbl">Nivel Superior</span>
-            </div>
-            <div class="kpi-card" style="border-color: #dc2626;">
-                <span class="kpi-val" id="kpi-ini" style="color: #dc2626;">0%</span>
-                <span class="kpi-lbl">Riesgo Inicial</span>
-            </div>
+        <div class="kpi-grid">
+            <div class="kpi-card"><span class="kpi-val" id="kpi-avg">0</span><span class="kpi-label">Promedio Global</span></div>
+            <div class="kpi-card"><span class="kpi-val" id="kpi-exc">0%</span><span class="kpi-label">Nivel Superior</span></div>
+            <div class="kpi-card"><span class="kpi-val" id="kpi-ini">0%</span><span class="kpi-label">Nivel Inicial</span></div>
         </div>
 
         <div class="main-content">
-            <div class="chart-container">
-                <h3 style="text-align: center; color: var(--primary); margin-bottom: 20px;">Mapeo de Competencias (Telaraña)</h3>
+            <div class="chart-box">
+                <h3 style="text-align: center; font-size: 14px;">TELARAÑA DE COMPETENCIAS</h3>
                 <canvas id="radarChart"></canvas>
             </div>
-
-            <div class="analysis-container">
-                <h3 class="analysis-title" style="margin-top:0; color: var(--accent);">DICTAMEN ESTRATÉGICO</h3>
-                <div id="risk-analysis" style="line-height: 1.6; margin-bottom: 30px; font-size: 14px;">
-                    Analizando métricas de rendimiento...
+            <div class="action-matrix">
+                <h3 style="margin-top:0; color: var(--accent);">CERTIFICACIÓN Y AUDITORÍA</h3>
+                <p id="cert-text" style="font-size: 13px; line-height: 1.6; opacity: 0.9;">
+                    Documento verificado bajo protocolos de integridad estadística. Este dashboard es un insumo oficial para la toma de decisiones pedagógicas.
+                </p>
+                <div style="margin-top: 20px;">
+                    <div style="font-size: 10px; text-transform: uppercase; color: var(--accent);">ID Verificación</div>
+                    <div id="v-code" style="font-weight: 800; font-family: monospace;">---</div>
                 </div>
-                
-                <div class="verif-box">
-                    <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8;">Código de Autenticidad Digital</div>
-                    <div class="verif-code" id="v-code">---</div>
-                    <p style="font-size: 10px; margin-top: 10px; opacity: 0.7;">Este documento es un reporte oficial generado por el Sistema de Inteligencia de la Academia Quijano.</p>
-                </div>
+                <button class="btn-print" onclick="window.print()">🖨️ DESCARGAR ACTA OFICIAL</button>
             </div>
         </div>
 
+        <div class="callout" id="risk-alert">
+            🚨 CARGANDO ALERTAS DE RIESGO...
+        </div>
+
+        <div class="footer">
+            ACADEMIA QUIJANO • SISTEMA DE GESTIÓN CORPORATIVA V.49 • 2026
+        </div>
     </div>
 
-    <button class="btn-print-floating" onclick="window.print()">🖨️ IMPRIMIR INFORME OFICIAL</button>
-
     <script>
-        // --- MOTOR DE DATOS ---
+        // MOTOR DE EXTRACCIÓN DE DATOS DE LA URL (SISTEMA QUIJANO)
         const params = new URLSearchParams(window.location.search);
-        const muni = params.get('muni') || 'Municipio';
-        const sim = params.get('sim') || 'S-N/A';
-        const headerTxt = `${muni.toUpperCase()} | PROCESO ${sim}`;
-
-        // Inyectar textos
-        document.getElementById('sub-info-screen').innerText = headerTxt;
-        document.getElementById('print-sub-info').innerText = headerTxt;
-        document.getElementById('v-code').innerText = params.get('v') || 'INVALID';
-
-        // Inyectar KPIs
+        
+        // Asignar datos a la UI
+        document.getElementById('sub-info').innerText = `${params.get('muni') || 'Municipio'} | Simulacro ${params.get('sim') || 'S11'}`;
         document.getElementById('kpi-avg').innerText = params.get('avg') || '0';
         document.getElementById('kpi-exc').innerText = (params.get('exc') || '0') + '%';
-        const iniPerc = params.get('ini') || '0';
-        document.getElementById('kpi-ini').innerText = iniPerc + '%';
+        document.getElementById('kpi-ini').innerText = (params.get('ini') || '0') + '%';
+        document.getElementById('v-code').innerText = params.get('v') || 'NO-AUTH';
 
-        // Análisis de Riesgo Dinámico
-        const riskEl = document.getElementById('risk-analysis');
-        if (parseInt(iniPerc) >= 25) {
-            riskEl.innerHTML = `⚠️ <b>ALERTA ROJA ACADÉMICA:</b> Se detecta un ${iniPerc}% de estudiantes en Nivel Inicial. Se recomienda activar planes de choque inmediatos en las áreas con menor desempeño del radar, con enfoque en refuerzo de bases conceptuales.`;
-            riskEl.style.color = '#ffcccb'; // Color para pantalla
-        } else if (parseInt(iniPerc) >= 10) {
-            riskEl.innerHTML = `📢 <b>ATENCIÓN REQUERIDA:</b> Existe una franja del ${iniPerc}% en riesgo. Focalizar esfuerzos de nivelación en el corto plazo para evitar rezago grupal.`;
-        } else {
-            riskEl.innerHTML = `✅ <b>ESTABILIDAD POSITIVA:</b> El grupo mantiene niveles de riesgo controlados. Se sugiere orientar la estrategia hacia la potenciación de los estudiantes en niveles medios hacia superiores.`;
-        }
+        // Lógica de Alerta de Riesgo
+        const iniPerc = parseInt(params.get('ini') || 0);
+        document.getElementById('risk-alert').innerHTML = `🚨 <b>ALERTA ESTRATÉGICA:</b> El ${iniPerc}% del grupo se encuentra en Nivel Inicial; se requiere intervención inmediata en la carga horaria de Inglés y Matemáticas.`;
 
-        // Renderizado de Gráfica (Optimizada para impresión)
+        // RENDERIZADO DEL RADAR CHART (CHART.JS ELITE)
         const ctx = document.getElementById('radarChart').getContext('2d');
-        Chart.defaults.font.family = "'Manrope', sans-serif";
         new Chart(ctx, {
             type: 'radar',
             data: {
                 labels: ['LECTURA', 'MATEMÁTICAS', 'SOCIALES', 'CIENCIAS', 'INGLÉS'],
                 datasets: [{
-                    label: 'Puntaje Promedio',
-                    data: [params.get('lec')||0, params.get('mat')||0, params.get('soc')||0, params.get('cie')||0, params.get('ing')||0],
-                    backgroundColor: 'rgba(10, 37, 64, 0.3)', // Azul corporativo translúcido
-                    borderColor: '#0a2540',
+                    label: 'Promedio Grupo',
+                    data: [
+                        params.get('lec') || 0,
+                        params.get('mat') || 0,
+                        params.get('soc') || 0,
+                        params.get('cie') || 0,
+                        params.get('ing') || 0
+                    ],
+                    backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                    borderColor: '#2563eb',
                     borderWidth: 3,
-                    pointBackgroundColor: '#FFD700',
-                    pointBorderColor: '#0a2540',
-                    pointRadius: 5
+                    pointBackgroundColor: '#0a2540',
+                    pointBorderColor: '#FFD700',
+                    pointHoverRadius: 8
+                }, {
+                    label: 'Meta Institucional',
+                    data: [70, 70, 70, 70, 70],
+                    borderColor: 'rgba(239, 68, 68, 0.5)',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    fill: false,
+                    pointRadius: 0
                 }]
             },
             options: {
                 scales: {
                     r: {
-                        beginAtZero: true, max: 100,
-                        ticks: { backdropColor: 'transparent', font: {size: 9} },
-                        pointLabels: { font: { size: 11, weight: '700' }, color: '#0a2540' }
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { display: false },
+                        grid: { color: '#e2e8f0' },
+                        angleLines: { color: '#e2e8f0' },
+                        pointLabels: {
+                            font: { size: 10, weight: '800' },
+                            color: '#0a2540'
+                        }
                     }
                 },
-                plugins: { legend: { display: false } }
+                plugins: {
+                    legend: { position: 'bottom', labels: { font: { size: 10, weight: '700' } } }
+                }
             }
         });
     </script>
