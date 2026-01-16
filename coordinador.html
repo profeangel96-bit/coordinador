@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informe Maestro V.70 | Sistema Quijano</title>
+    <title>Informe Maestro V.71 | Sistema Quijano</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
@@ -52,22 +52,29 @@
         .signature-block { margin-top: auto; }
         .sign-line { width: 250px; border-bottom: 2px solid #0f172a; margin-bottom: 15px; }
 
-        /* --- PÁGINA 3+: MATRIZ (LÓGICA DE CORTE CORREGIDA) --- */
+        /* --- PÁGINA 3+: MATRIZ (AJUSTES FINALES V.71) --- */
         .matrix-page { 
             padding: 2cm; 
             height: auto !important; 
             min-height: 27.94cm; 
             display: block; 
         } 
-        .section-title { font-size: 18px; font-weight: 800; color: var(--c-dark); border-left: 6px solid var(--c-blue); padding-left: 15px; margin-bottom: 30px; text-transform: uppercase; }
-
-        .data-table { width: 100%; border-collapse: collapse; font-size: 10px; margin-bottom: 20px; }
         
-        /* MAGIA PARA IMPRESIÓN: Repetir Header + Espaciador */
+        /* 1. TÍTULO MÁS PEGADO A LA TABLA (Margin-bottom reducido a 10px) */
+        .section-title { 
+            font-size: 18px; font-weight: 800; color: var(--c-dark); 
+            border-left: 6px solid var(--c-blue); padding-left: 15px; 
+            margin-bottom: 10px; /* ANTES 30px, AHORA 10px */
+            text-transform: uppercase; 
+        }
+
+        .data-table { width: 100%; border-collapse: collapse; font-size: 10px; margin-bottom: 20px; margin-top: 0; }
+        
+        /* HEADER REPETIDO + SALTO LIMPIO */
         .data-table thead { display: table-header-group; } 
         .data-table tr { page-break-inside: avoid !important; break-inside: avoid !important; } 
         
-        /* Espaciador Invisible (Solo se ve al imprimir en hoja nueva) */
+        /* Espaciador Invisible para nuevas páginas */
         .print-spacer th { 
             height: 0px; 
             border: none !important; background: transparent !important; 
@@ -84,9 +91,8 @@
         .bg-warn { background: #ffedd5; color: #c2410c; font-weight:700; border-radius: 4px; padding: 3px 0; display:block; width: 80%; margin: 0 auto; }
         .bg-good { background: #dcfce7; color: var(--safe); font-weight:700; border-radius: 4px; padding: 3px 0; display:block; width: 80%; margin: 0 auto; }
 
-        /* --- PÁGINA 4: GRÁFICAS (DONUT PLANO) --- */
+        /* --- PÁGINA 4: GRÁFICAS --- */
         .charts-page { padding: 2cm; display: flex; flex-direction: column; justify-content: center; gap: 50px; }
-        
         .chart-box { 
             background: white; border-radius: 12px; padding: 30px; 
             box-shadow: var(--shadow-pro); border: 1px solid #f1f5f9;
@@ -94,33 +100,21 @@
             background: linear-gradient(to right, #f8fafc, #ffffff 10%);
         }
         .chart-heading { text-align: center; font-weight: 800; margin-bottom: 25px; color: var(--c-blue); text-transform: uppercase; font-size: 13px; letter-spacing: 1px; }
-
-        /* DONUT PLANO (LIMPIO) */
-        .donut-simple-container { 
-            position: relative; height: 350px; width: 100%;
-            display: flex; justify-content: center; align-items: center;
-        }
+        .donut-simple-container { position: relative; height: 350px; width: 100%; display: flex; justify-content: center; align-items: center; }
         .donut-center-txt { position: absolute; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; }
 
-        /* --- PÁGINA 5: DICTAMEN (LETRA GRANDE) --- */
+        /* --- PÁGINA 5: DICTAMEN --- */
         .analysis-page { padding: 2cm; justify-content: space-between; }
         .analysis-container { flex-grow: 1; display: flex; flex-direction: column; gap: 30px; justify-content: center; margin: 20px 0; }
-        
-        .analysis-item { 
-            background: #fff; border: 1px solid #e2e8f0; padding: 20px 25px; 
-            border-radius: 8px; border-left: 6px solid; box-shadow: var(--shadow-pro);
-        }
-        /* TIPOGRAFÍA AUMENTADA */
+        .analysis-item { background: #fff; border: 1px solid #e2e8f0; padding: 20px 25px; border-radius: 8px; border-left: 6px solid; box-shadow: var(--shadow-pro); }
         .analysis-item h3 { margin: 0 0 10px 0; font-size: 15px; color: var(--c-dark); text-transform: uppercase; font-weight: 800; }
         .analysis-text { font-size: 13px; line-height: 1.8; color: #475569; text-align: justify; margin: 0; }
-
         .bor-lec { border-left-color: var(--c-blue); } .bor-mat { border-left-color: var(--risk); }
         .bor-soc { border-left-color: var(--warn); } .bor-cie { border-left-color: var(--safe); }
         .bor-ing { border-left-color: var(--c-gold); }
-
         .legal-footer { text-align: center; font-size: 10px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 15px; margin-top: auto; font-family: monospace; letter-spacing: 0.5px; }
 
-        /* --- MODO IMPRESIÓN (EL SECRETO) --- */
+        /* --- MODO IMPRESIÓN (AJUSTES DE SEGURIDAD) --- */
         @media print {
             @page { margin: 0; size: Letter; } 
             body { background: white; padding: 0; gap: 0; }
@@ -129,15 +123,13 @@
                 box-shadow: none; page-break-after: always; break-inside: avoid; overflow: hidden;
             }
             
-            /* LÓGICA DE SALTO DE PÁGINA SEGURA */
+            /* 2. FRENO DE SEGURIDAD INFERIOR AUMENTADO */
             .matrix-page { 
                 height: auto !important; min-height: 27.94cm; 
                 overflow: visible !important; 
-                /* COLCHÓN INFERIOR DE 3CM PARA QUE NO CORTE AL FINAL */
-                padding-bottom: 3cm !important; 
+                padding-bottom: 3.5cm !important; /* MÁS ESPACIO AL FINAL PARA EVITAR BORDES */
             }
 
-            /* ACTIVAR ESPACIADOR SUPERIOR AL IMPRIMIR */
             .print-spacer th { height: 1.5cm !important; }
 
             .page:last-child { page-break-after: auto; }
@@ -235,13 +227,13 @@
             <div class="analysis-item bor-cie"><h3>4. Pensamiento Científico</h3><p class="analysis-text" id="desc-cie">Ciencias Naturales presenta un puntaje medio de <span id="avg-cie-txt" style="font-weight:700">0</span>. El análisis de indagación y uso comprensivo del conocimiento científico muestra homogeneidad en el grupo evaluado.</p></div>
             <div class="analysis-item bor-ing"><h3>5. Competencia en Segunda Lengua</h3><p class="analysis-text" id="desc-ing">Inglés cierra la evaluación con un promedio de <span id="avg-ing-txt" style="font-weight:700">0</span>. La mayoría de la población se ubica en las bandas iniciales del Marco Común Europeo.</p></div>
         </div>
-        <div class="legal-footer">CERTIFICADO DE AUTENTICIDAD DIGITAL • HASH: <span id="v-hash">---</span><br>SISTEMA DE GESTIÓN DE CALIDAD QUIJANO V.70 FINAL</div>
+        <div class="legal-footer">CERTIFICADO DE AUTENTICIDAD DIGITAL • HASH: <span id="v-hash">---</span><br>SISTEMA DE GESTIÓN DE CALIDAD QUIJANO V.71 FINAL</div>
     </div>
 
     <button class="fab-print" onclick="window.print()">🖨️ IMPRIMIR INFORME</button>
 
     <script>
-        // --- SIMULACIÓN MASIVA (60 ALUMNOS - PRUEBA EXTREMA) ---
+        // --- SIMULACIÓN MASIVA (60 ALUMNOS) ---
         const base = [{ name: "AGUIRRE DAVILA DANA", l:71, m:68, s:70, c:75, i:80, g:364 },{ name: "ANACONA BOLAÑOS ANDRES", l:65, m:45, s:60, c:55, i:45, g:270 },{ name: "BENAVIDES SOFIA", l:82, m:78, s:75, c:80, i:85, g:400 },{ name: "CAICEDO JUAN ESTEBAN", l:55, m:45, s:50, c:52, i:40, g:242 }];
         let students = []; for(let k=0; k<15; k++) students = students.concat(base.map(s => ({...s, name: s.name + " " + (k+1)})));
 
@@ -255,12 +247,10 @@
             tbody.innerHTML += `<tr><td>${i+1}</td><td style="text-align:left; font-weight:600;">${s.name}</td><td><span class="${color(s.l)}">${s.l}</span></td><td><span class="${color(s.m)}">${s.m}</span></td><td><span class="${color(s.s)}">${s.s}</span></td><td><span class="${color(s.c)}">${s.c}</span></td><td><span class="${color(s.i)}">${s.i}</span></td><td><strong>${s.g}</strong></td></tr>`;
         });
 
-        // Fila final (como fila normal, no tfoot)
         const c = students.length;
         const avg = {l:Math.round(sum.l/c), m:Math.round(sum.m/c), s:Math.round(sum.s/c), c:Math.round(sum.c/c), i:Math.round(sum.i/c), g:Math.round(sum.g/c)};
         tbody.innerHTML += `<tr class="final-row-total"><td colspan="2" style="text-align:right;">PROMEDIO INSTITUCIONAL:</td><td>${avg.l}</td><td>${avg.m}</td><td>${avg.s}</td><td>${avg.c}</td><td>${avg.i}</td><td>${avg.g}</td></tr>`;
 
-        // Textos
         document.getElementById('total-students').innerText = c;
         document.getElementById('avg-lec-txt').innerText = avg.l;
         document.getElementById('avg-mat-txt').innerText = avg.m;
@@ -268,7 +258,6 @@
         document.getElementById('avg-cie-txt').innerText = avg.c;
         document.getElementById('avg-ing-txt').innerText = avg.i;
 
-        // GRÁFICOS
         Chart.defaults.font.family = "'Inter', sans-serif";
         function getBarColor(val) { if(val<=60) return '#dc2626'; if(val<=75) return '#d97706'; return '#1d4ed8'; }
         new Chart(document.getElementById('barChart'), {
@@ -277,7 +266,7 @@
         });
         let levels = { low:0, mid:0, high:0 }; students.forEach(s=>{ if(s.g<250) levels.low++; else if(s.g<320) levels.mid++; else levels.high++; });
         new Chart(document.getElementById('donutChart'), {
-            type: 'doughnut', data: { labels: ['Bajo (<250)', 'Medio (250-320)', 'Alto (>320)'], datasets: [{ data: [levels.low, levels.mid, levels.high], backgroundColor: ['#dc2626', '#f59e0b', '#16a34a'], borderWidth: 0 }] }, // BorderWidth 0 para plano
+            type: 'doughnut', data: { labels: ['Bajo (<250)', 'Medio (250-320)', 'Alto (>320)'], datasets: [{ data: [levels.low, levels.mid, levels.high], backgroundColor: ['#dc2626', '#f59e0b', '#16a34a'], borderWidth: 0 }] },
             options: { cutout: '70%', plugins: { legend: { position:'bottom', labels:{padding:25, usePointStyle:true, pointStyle:'circle', font:{size:12, weight:'600'}} } } }
         });
 
