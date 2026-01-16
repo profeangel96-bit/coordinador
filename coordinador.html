@@ -3,256 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informe Oficial | Academia Quijano</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Informe Estratégico Oficial | Academia Quijano</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         :root {
-            --navy: #0f172a; --blue: #2563eb; --gold: #d97706;
-            --risk: #ef4444; --safe: #10b981; --bg: #f1f5f9;
+            --brand-dark: #0f172a; /* Navy Profundo */
+            --brand-blue: #2563eb; /* Azul Eléctrico */
+            --brand-gold: #d97706; /* Dorado Consultor */
+            --risk-bg: #fee2e2; --risk-txt: #991b1b;
+            --warn-bg: #fef9c3; --warn-txt: #854d0e;
+            --safe-bg: #dcfce7; --safe-txt: #166534;
+            --paper: #ffffff;
+            --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.1);
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #cbd5e1;
+            background: #cbd5e1; /* Fondo gris para resaltar las hojas en pantalla */
             margin: 0;
             padding: 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 40px; /* Separación entre hojas en pantalla */
-            color: var(--navy);
+            gap: 40px;
+            color: var(--brand-dark);
         }
 
-        /* --- HOJA DE PAPEL (A4) --- */
+        /* --- ARQUITECTURA DE PÁGINA (A4 EXACTO) --- */
         .page {
-            background: white;
-            width: 21cm; min-height: 29.7cm;
-            padding: 1.5cm;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            box-sizing: border-box;
+            background: var(--paper);
+            width: 21cm;
+            height: 29.7cm; /* Altura fija A4 */
+            padding: 0; /* Control total de márgenes internos */
             position: relative;
+            box-shadow: var(--shadow-soft);
+            overflow: hidden; /* Para que el diseño no sangre mal */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* --- ESTILOS PÁGINA 1 (DASHBOARD) --- */
-        header { display: flex; justify-content: space-between; border-bottom: 2px solid #f1f5f9; padding-bottom: 20px; margin-bottom: 30px; }
-        .brand h1 { margin: 0; font-size: 22px; font-weight: 800; color: var(--navy); }
-        .brand span { color: var(--blue); }
-        
-        .ai-card { background: #0f172a; color: white; border-radius: 12px; padding: 25px; display: flex; gap: 20px; margin-bottom: 30px; }
-        .grid-visuals { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px; }
-        
-        /* KPIS */
-        .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: auto; }
-        .kpi-box { background: #f8fafc; padding: 20px; text-align: center; border-radius: 8px; }
-        .kpi-num { font-size: 36px; font-weight: 800; }
-
-        /* --- ESTILOS PÁGINA 2 (TABLA DE MÉRITO) --- */
-        .table-header { margin-bottom: 20px; text-align: center; }
-        .table-header h2 { font-size: 18px; text-transform: uppercase; letter-spacing: 1px; color: var(--blue); margin: 0; }
-        
-        /* LA TABLA LINDA (Adiós Excel) */
-        .modern-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        .modern-table th { 
-            text-align: left; background: #f8fafc; color: #64748b; 
-            text-transform: uppercase; font-size: 10px; letter-spacing: 1px;
-            padding: 12px; border-bottom: 2px solid #e2e8f0;
+        /* --- PÁGINA 1: PORTADA DE LUJO (Estilo Netflix ESG) --- */
+        .cover-page {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            justify-content: space-between;
+            padding: 3cm;
         }
-        .modern-table td { padding: 12px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+        .cover-logo { width: 150px; margin-bottom: 2cm; }
+        .cover-title { font-size: 48px; font-weight: 900; line-height: 1.1; letter-spacing: -1px; text-transform: uppercase; }
+        .cover-subtitle { font-size: 18px; font-weight: 300; margin-top: 20px; opacity: 0.8; border-left: 4px solid var(--brand-gold); padding-left: 20px; }
+        .cover-footer { border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; font-size: 12px; display: flex; justify-content: space-between; }
+
+        /* --- PÁGINA 2: PRESENTACIÓN (Estilo Carta) --- */
+        .intro-page { padding: 2.5cm; justify-content: center; }
+        .intro-text { font-size: 14px; line-height: 1.8; text-align: justify; color: #334155; }
+        .intro-signature { margin-top: 2cm; }
+        .intro-quote { font-style: italic; color: var(--brand-blue); font-size: 18px; margin-bottom: 30px; font-weight: 600; text-align: center; }
+
+        /* --- PÁGINA 3: RESUMEN EJECUTIVO (Dashboard) --- */
+        .dashboard-page { padding: 2cm; }
+        .dash-header { border-bottom: 2px solid #e2e8f0; padding-bottom: 20px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; }
         
-        /* Filas alternadas sutiles */
-        .modern-table tr:nth-child(even) { background-color: #fcfcfc; }
+        .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
+        .kpi-card { background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; text-align: center; }
+        .kpi-val { font-size: 42px; font-weight: 800; color: var(--brand-dark); }
+        .kpi-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #64748b; font-weight: 700; }
+
+        .chart-section { height: 350px; width: 100%; display: flex; justify-content: center; margin-bottom: 30px; }
         
-        /* Medallas */
-        .rank-badge { 
-            width: 24px; height: 24px; border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; 
-            font-weight: bold; color: white; font-size: 10px;
+        /* --- PÁGINA 4+: TABLA DE DATOS (Ingeniería Pura) --- */
+        .data-page { padding: 1.5cm; height: auto; min-height: 29.7cm; } /* Altura auto para que la tabla fluya si se imprime */
+        
+        .master-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+        
+        /* Cabecera pegajosa para impresión */
+        .master-table thead { display: table-header-group; } 
+        .master-table tr { page-break-inside: avoid; } /* Evita cortar alumnos a la mitad */
+        
+        .master-table th { 
+            background: var(--brand-dark); color: white; 
+            padding: 10px; text-align: left; text-transform: uppercase; 
+            font-size: 9px; letter-spacing: 0.5px;
         }
-        .gold-rank { background: #fbbf24; box-shadow: 0 2px 5px rgba(251, 191, 36, 0.4); }
-        .silver-rank { background: #94a3b8; }
-        .bronze-rank { background: #b45309; }
-        .normal-rank { background: transparent; color: #64748b; font-size: 12px; }
+        .master-table td { padding: 8px 10px; border-bottom: 1px solid #e2e8f0; color: #334155; font-weight: 500; }
+        
+        /* HEATMAP CLASSES (Generadas por el Ingeniero) */
+        .score-box { 
+            padding: 4px 8px; border-radius: 4px; font-weight: 700; text-align: center; display: inline-block; width: 30px;
+        }
+        .hm-critico { background: var(--risk-bg); color: var(--risk-txt); }
+        .hm-alerta { background: var(--warn-bg); color: var(--warn-txt); }
+        .hm-optimo { background: var(--safe-bg); color: var(--safe-txt); }
 
-        /* Barras pequeñas en la tabla */
-        .mini-bar-bg { width: 60px; height: 4px; background: #e2e8f0; border-radius: 2px; display: inline-block; margin-right: 5px; }
-        .mini-bar-fill { height: 100%; background: var(--blue); border-radius: 2px; }
+        /* BOTÓN FLOTANTE */
+        .fab {
+            position: fixed; bottom: 30px; right: 30px;
+            background: var(--brand-blue); color: white;
+            padding: 15px 30px; border-radius: 50px;
+            font-weight: 700; box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+            border: none; cursor: pointer; transition: transform 0.2s; z-index: 1000;
+        }
+        .fab:hover { transform: scale(1.05); }
 
-        /* --- BOTÓN Y PRINT --- */
-        .fab { position: fixed; bottom: 30px; right: 30px; background: var(--navy); color: white; padding: 15px 30px; border-radius: 50px; border: none; font-weight: 700; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-
+        /* --- MODO IMPRESIÓN PRO --- */
         @media print {
-            body { background: white; padding: 0; gap: 0; display: block; }
+            body { background: white; padding: 0; gap: 0; }
             .page { 
-                width: 100%; height: auto; padding: 1.5cm; margin: 0; 
-                box-shadow: none; page-break-after: always; /* MAGIA: Salto de hoja */
+                box-shadow: none; margin: 0; width: 100%; height: auto; 
+                page-break-after: always; /* Fuerza hoja nueva */
             }
             .page:last-child { page-break-after: auto; }
             .fab { display: none; }
-            .ai-card, .rank-badge { -webkit-print-color-adjust: exact; }
+            /* Ajustes de color para impresoras */
+            .cover-page { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .hm-critico, .hm-alerta, .hm-optimo { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         }
     </style>
 </head>
 <body>
 
-    <div class="page">
-        <header>
-            <div class="brand"><h1>SISTEMA <span>QUIJANO</span></h1></div>
-            <div style="text-align: right; font-size: 11px;">
-                <strong id="sim-id">S-11</strong><br>
-                <span id="muni-id">MUNICIPIO</span>
-            </div>
-        </header>
-
-        <div class="ai-card">
-            <div style="font-size: 30px;">🤖</div>
+    <div class="page cover-page">
+        <div>
+            <img src="https://raw.githubusercontent.com/profeangel96-bit/PLANTILLA/main/Gemini_Generated_Image_24c84124c84124c8.png" class="cover-logo">
+            <div style="font-size: 14px; letter-spacing: 2px; opacity: 0.8; margin-bottom: 10px;">INFORME OFICIAL CONFIDENCIAL</div>
+            <div class="cover-title">INTELIGENCIA<br>ESTRATÉGICA<br>EDUCATIVA</div>
+            <div class="cover-subtitle">Análisis de rendimiento y proyección de calidad basada en datos.</div>
+        </div>
+        <div class="cover-footer">
             <div>
-                <div style="font-size: 10px; opacity: 0.7; text-transform: uppercase;">Análisis de Inteligencia</div>
-                <div style="font-size: 13px; margin-top: 5px;">
-                    El grupo presenta una desviación estándar baja, indicando homogeneidad. 
-                    Se recomienda enfocar recursos en el <strong>Top 15%</strong> para asegurar becas de excelencia, 
-                    mientras se mantiene el plan de nivelación en Matemáticas.
-                </div>
+                <strong>PREPARADO PARA:</strong><br>
+                <span id="cover-muni">ALCALDÍA MUNICIPAL</span>
             </div>
-        </div>
-
-        <div class="grid-visuals" style="height: 400px;">
-            <div style="border:1px solid #e2e8f0; border-radius:12px; padding:15px;">
-                <canvas id="radarChart"></canvas>
+            <div style="text-align: right;">
+                <strong>FECHA DE CORTE:</strong><br>
+                16 DE ENERO DE 2026
             </div>
-            <div style="border:1px solid #e2e8f0; border-radius:12px; padding:20px; display:flex; flex-direction:column; justify-content:center;">
-                <h3 style="margin-top:0; font-size:14px; color:#64748b;">MAPA DE CALOR</h3>
-                <div style="display:grid; gap:10px;">
-                    <div style="display:flex; justify-content:space-between; font-size:12px;">
-                        <span>Lectura</span> <span style="font-weight:bold; color:var(--safe)">71 (Alto)</span>
-                    </div>
-                    <div style="width:100%; height:6px; background:#e2e8f0; border-radius:3px;"><div style="width:71%; background:var(--safe); height:100%; border-radius:3px;"></div></div>
-                    
-                    <div style="display:flex; justify-content:space-between; font-size:12px; margin-top:10px;">
-                        <span>Matemáticas</span> <span style="font-weight:bold; color:var(--risk)">45 (Bajo)</span>
-                    </div>
-                    <div style="width:100%; height:6px; background:#e2e8f0; border-radius:3px;"><div style="width:45%; background:var(--risk); height:100%; border-radius:3px;"></div></div>
-
-                    <div style="display:flex; justify-content:space-between; font-size:12px; margin-top:10px;">
-                        <span>Inglés</span> <span style="font-weight:bold; color:#f59e0b">60 (Medio)</span>
-                    </div>
-                    <div style="width:100%; height:6px; background:#e2e8f0; border-radius:3px;"><div style="width:60%; background:#f59e0b; height:100%; border-radius:3px;"></div></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="kpi-row">
-            <div class="kpi-box"><div style="font-size:10px;">PROMEDIO</div><div class="kpi-num" id="kpi-avg" style="color:var(--navy)">0</div></div>
-            <div class="kpi-box"><div style="font-size:10px;">EXCELENCIA</div><div class="kpi-num" id="kpi-exc" style="color:var(--safe)">0%</div></div>
-            <div class="kpi-box"><div style="font-size:10px;">RIESGO</div><div class="kpi-num" id="kpi-ini" style="color:var(--risk)">0%</div></div>
         </div>
     </div>
 
-    <div class="page">
-        <div class="table-header">
-            <h2>Cuadro de Mérito Académico</h2>
-            <p style="font-size: 11px; color: #64748b;">Listado oficial de desempeño destacado y consolidado.</p>
+    <div class="page intro-page">
+        <div class="intro-quote">"Lo que no se mide, no se puede mejorar."</div>
+        <div class="intro-text">
+            <p><strong>A la atención de la Secretaría de Educación y Rectoría:</strong></p>
+            <p>
+                El presente documento constituye el <strong>Informe Técnico de Resultados</strong> correspondiente al Simulacro S-11. 
+                A diferencia de los reportes tradicionales, este análisis emplea un motor de inteligencia de datos diseñado por 
+                <strong>Academia Quijano</strong> para identificar no solo puntajes, sino tendencias, riesgos y oportunidades.
+            </p>
+            <p>
+                En las siguientes páginas encontrará:
+            </p>
+            <ul>
+                <li>Un diagnóstico ejecutivo del estado actual del grupo.</li>
+                <li>Mapeo de competencias mediante radar comparativo.</li>
+                <li>La Matriz de Calor (Heatmap) que revela el desempeño individual detallado.</li>
+            </ul>
+            <p>
+                Nuestro objetivo no es solo entregar números, sino proveer una herramienta de toma de decisiones para elevar 
+                los indicadores de calidad educativa del municipio.
+            </p>
+        </div>
+        <div class="intro-signature">
+            <div style="width: 200px; border-bottom: 2px solid var(--brand-dark); margin-bottom: 10px;"></div>
+            <strong>DIRECCIÓN DE PROYECTOS</strong><br>
+            <span style="font-size: 12px; color: #64748b;">SISTEMA DE INTELIGENCIA QUIJANO</span>
+        </div>
+    </div>
+
+    <div class="page dashboard-page">
+        <div class="dash-header">
+            <div>
+                <h2 style="margin:0; font-size:24px; color:var(--brand-dark);">RESUMEN EJECUTIVO</h2>
+                <span style="font-size:12px; color:#64748b;">VISIÓN GENERAL DEL GRUPO</span>
+            </div>
+            <div class="pill" style="background:#eff6ff; color:var(--brand-blue); padding:5px 10px; border-radius:4px; font-weight:bold; font-size:11px;">
+                SIMULACRO S-11
+            </div>
         </div>
 
-        <table class="modern-table">
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-val" id="kpi-avg">0</div>
+                <div class="kpi-lbl">Promedio Global</div>
+            </div>
+            <div class="kpi-card" style="border-color: var(--safe-bg);">
+                <div class="kpi-val" style="color: var(--safe-txt);" id="kpi-exc">0%</div>
+                <div class="kpi-lbl">Tasa de Excelencia</div>
+            </div>
+            <div class="kpi-card" style="border-color: var(--risk-bg);">
+                <div class="kpi-val" style="color: var(--risk-txt);" id="kpi-ini">0%</div>
+                <div class="kpi-lbl">Índice de Riesgo</div>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <canvas id="radarChart"></canvas>
+        </div>
+
+        <div style="background: #f1f5f9; padding: 20px; border-radius: 8px; border-left: 5px solid var(--brand-gold);">
+            <strong style="color: var(--brand-gold); text-transform: uppercase; font-size: 11px;">Insight de Inteligencia</strong>
+            <p style="margin: 5px 0 0 0; font-size: 13px; color: #334155;" id="ai-insight">
+                El análisis de varianza sugiere consolidar las bases en <strong>Lectura Crítica</strong>. 
+                El grupo muestra homogeneidad en Ciencias, pero dispersión alta en Inglés.
+            </p>
+        </div>
+    </div>
+
+    <div class="page data-page">
+        <div class="dash-header">
+            <div>
+                <h2 style="margin:0; font-size:20px;">MATRIZ DE RESULTADOS</h2>
+                <span style="font-size:11px; color:#64748b;">DESGLOSE INDIVIDUAL + MAPA DE CALOR</span>
+            </div>
+        </div>
+
+        <table class="master-table">
             <thead>
                 <tr>
-                    <th style="width: 50px;">RK</th>
+                    <th style="width:30px;">#</th>
+                    <th>ID / Documento</th>
                     <th>Estudiante</th>
-                    <th>Lectura</th>
-                    <th>Matem</th>
-                    <th>Ciencias</th>
-                    <th>Global</th>
+                    <th style="text-align:center;">LEC</th>
+                    <th style="text-align:center;">MAT</th>
+                    <th style="text-align:center;">SOC</th>
+                    <th style="text-align:center;">CIE</th>
+                    <th style="text-align:center;">ING</th>
+                    <th style="text-align:center;">GLOBAL</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td><div class="rank-badge gold-rank">1</div></td>
-                    <td><strong>AGUIRRE DAVILA DANA</strong></td>
-                    <td>71</td>
-                    <td>68</td>
-                    <td><span style="color:var(--safe); font-weight:bold;">75</span></td>
-                    <td><strong style="color:var(--blue)">380</strong></td>
-                </tr>
-                <tr>
-                    <td><div class="rank-badge silver-rank">2</div></td>
-                    <td>ANACONA BOLAÑOS ANDRES</td>
-                    <td>68</td>
-                    <td>65</td>
-                    <td>60</td>
-                    <td><strong>365</strong></td>
-                </tr>
-                <tr>
-                    <td><div class="rank-badge bronze-rank">3</div></td>
-                    <td>ARCOS NANDAR OSCAR</td>
-                    <td>65</td>
-                    <td>62</td>
-                    <td>58</td>
-                    <td><strong>350</strong></td>
-                </tr>
-                <tr>
-                    <td><div class="rank-badge normal-rank">4</div></td>
-                    <td>CHAPUEL MOLINA YESITH</td>
-                    <td>60</td>
-                    <td>55</td>
-                    <td>50</td>
-                    <td>310</td>
-                </tr>
-                <tr>
-                    <td><div class="rank-badge normal-rank">5</div></td>
-                    <td>CIFUENTES JACOME GABRIELA</td>
-                    <td>58</td>
-                    <td><span style="color:var(--risk)">40</span></td>
-                    <td>48</td>
-                    <td>290</td>
-                </tr>
+            <tbody id="students-body">
                 </tbody>
         </table>
-
-        <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: flex-end;">
-            <div style="font-size: 10px; color: #94a3b8;">
-                Generado el 16/01/2026<br>
-                Hash: <span id="v-code">---</span>
-            </div>
-            <div style="text-align: center;">
-                <div style="width: 150px; border-bottom: 1px solid #0f172a; margin-bottom: 5px;"></div>
-                <div style="font-size: 11px; font-weight: bold;">Coordinación Académica</div>
-            </div>
+        
+        <div style="margin-top: 20px; font-size: 10px; color: #94a3b8; text-align: center;">
+            Documento generado con tecnología web de alta precisión. Hash de seguridad: <span id="v-hash">---</span>
         </div>
     </div>
 
-    <button class="fab" onclick="window.print()">🖨️ IMPRIMIR REPORTE</button>
+    <button class="fab" onclick="window.print()">🖨️ IMPRIMIR INFORME</button>
 
     <script>
+        // --- 1. LÓGICA DE DATOS (URL) ---
         const p = new URLSearchParams(window.location.search);
         
-        // Cargar datos básicos (solo para que no se vea vacío el demo)
-        document.getElementById('muni-display').innerText = (p.get('muni') || 'GENERAL').toUpperCase();
-        document.getElementById('sim-id').innerText = p.get('sim') || 'S-11';
+        // Datos Portada
+        document.getElementById('cover-muni').innerText = (p.get('muni') || 'ALCALDÍA').toUpperCase();
+        document.getElementById('v-hash').innerText = p.get('v') || 'DEV-MODE';
+
+        // Datos KPIs
         document.getElementById('kpi-avg').innerText = p.get('avg') || 0;
         document.getElementById('kpi-exc').innerText = (p.get('exc')||0) + "%";
         document.getElementById('kpi-ini').innerText = (p.get('ini')||0) + "%";
-        document.getElementById('v-code').innerText = p.get('v') || 'NO-DATA';
 
-        // Radar Chart
+        // --- 2. RADAR CHART ---
         const ctx = document.getElementById('radarChart').getContext('2d');
         Chart.defaults.font.family = "'Inter', sans-serif";
         new Chart(ctx, {
             type: 'radar',
             data: {
-                labels: ['LEC', 'MAT', 'SOC', 'CIE', 'ING'],
+                labels: ['LECTURA', 'MATEMÁTICAS', 'SOCIALES', 'CIENCIAS', 'INGLÉS'],
                 datasets: [{
-                    label: 'Puntaje',
+                    label: 'Puntaje Institucional',
                     data: [p.get('lec')||50, p.get('mat')||50, p.get('soc')||50, p.get('cie')||50, p.get('ing')||50],
                     backgroundColor: 'rgba(37, 99, 235, 0.2)',
                     borderColor: '#2563eb',
                     borderWidth: 2,
-                    pointBackgroundColor: '#fff'
+                    pointBackgroundColor: '#0f172a'
                 }]
             },
-            options: { scales: { r: { beginAtZero: true, max: 100, ticks: { display: false } } }, plugins: { legend: { display: false } } }
+            options: { scales: { r: { beginAtZero: true, max: 100 } } }
         });
+
+        // --- 3. GENERADOR DE TABLA (HEATMAP ENGINE) ---
+        // Como no podemos pasar 500 alumnos por URL, aquí SIMULAMOS cómo se ve la tabla llena
+        // Cuando conectemos la base de datos real, esto se llenará solo.
+        
+        const mockStudents = [
+            { id: '1085...', name: 'AGUIRRE DAVILA DANA', l: 71, m: 68, s: 70, c: 75, i: 80, g: 364 },
+            { id: '1004...', name: 'ANACONA BOLAÑOS ANDRES', l: 65, m: 50, s: 60, c: 55, i: 45, g: 275 },
+            { id: '1082...', name: 'ARCOS NANDAR OSCAR', l: 40, m: 30, s: 45, c: 50, i: 35, g: 200 },
+            { id: '1120...', name: 'BENAVIDES SOFIA', l: 80, m: 78, s: 75, c: 82, i: 85, g: 400 },
+            { id: '1050...', name: 'CAICEDO JUAN ESTEBAN', l: 55, m: 45, s: 50, c: 52, i: 40, g: 242 },
+            // ... (El script generará más filas para demostrar el salto de página)
+        ];
+
+        // Función del Ingeniero: Asigna color según puntaje
+        function getHeatClass(score) {
+            if (score <= 45) return 'hm-critico';
+            if (score <= 65) return 'hm-alerta';
+            return 'hm-optimo';
+        }
+
+        const tbody = document.getElementById('students-body');
+
+        // Generamos 25 filas de ejemplo para que veas el efecto
+        let exampleList = [...mockStudents, ...mockStudents, ...mockStudents, ...mockStudents, ...mockStudents]; 
+
+        exampleList.forEach((est, index) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${index + 1}</td>
+                <td style="font-family:monospace; color:#64748b;">${est.id}</td>
+                <td><strong>${est.name}</strong></td>
+                <td style="text-align:center;"><span class="score-box ${getHeatClass(est.l)}">${est.l}</span></td>
+                <td style="text-align:center;"><span class="score-box ${getHeatClass(est.m)}">${est.m}</span></td>
+                <td style="text-align:center;"><span class="score-box ${getHeatClass(est.s)}">${est.s}</span></td>
+                <td style="text-align:center;"><span class="score-box ${getHeatClass(est.c)}">${est.c}</span></td>
+                <td style="text-align:center;"><span class="score-box ${getHeatClass(est.i)}">${est.i}</span></td>
+                <td style="text-align:center;"><strong>${est.g}</strong></td>
+            `;
+            tbody.appendChild(tr);
+        });
+
     </script>
 </body>
 </html>
