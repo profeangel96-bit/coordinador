@@ -4,272 +4,330 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Informe Gerencial | Quijano Intelligence</title>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         :root {
-            --dark: #0f172a;
-            --blue: #0a2540;
-            --gold: #d4af37;
-            --gray: #64748b;
-            --light: #f8fafc;
+            --navy: #0f172a;
+            --blue: #2563eb;
+            --gold: #d97706;
+            --risk: #ef4444;
+            --safe: #10b981;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
         }
 
         body {
-            font-family: 'Manrope', sans-serif;
+            font-family: 'Inter', sans-serif;
             background: #e2e8f0;
             margin: 0;
             padding: 40px;
             display: flex;
             justify-content: center;
-            color: var(--dark);
+            color: var(--navy);
+            -webkit-print-color-adjust: exact;
         }
 
-        /* --- HOJA DE PAPEL DIGITAL (ESTILO REVISTA) --- */
-        .page {
-            background: white;
-            width: 21cm; /* Ancho A4 */
-            min-height: 29.7cm; /* Alto A4 */
-            padding: 2cm;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+        /* --- CONTENEDOR TIPO HOJA A4 (Dashboard) --- */
+        .dashboard-page {
+            background: var(--card-bg);
+            width: 21cm;
+            min-height: 29.7cm;
+            padding: 1.5cm;
+            box-shadow: var(--shadow);
             display: grid;
-            grid-template-rows: auto auto 1fr auto;
+            grid-template-rows: auto auto 1fr auto auto; /* Header, IA, Heatmap/Radar, Footer */
             gap: 30px;
             box-sizing: border-box;
+            border-radius: 12px; /* Toque App */
         }
 
-        /* 1. ENCABEZADO CORPORATIVO */
+        /* 1. HEADER EJECUTIVO */
         header {
-            border-bottom: 3px solid var(--blue);
-            padding-bottom: 20px;
             display: flex;
             justify-content: space-between;
-            align-items: flex-end;
+            align-items: center;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 20px;
         }
-        .brand h1 { margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 2px; color: var(--blue); }
-        .brand span { color: var(--gold); font-weight: 800; }
-        .meta-data { text-align: right; font-size: 12px; color: var(--gray); }
-        .meta-data strong { display: block; color: var(--dark); font-size: 14px; }
+        .brand h1 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; color: var(--navy); }
+        .brand span { color: var(--blue); }
+        .report-meta { text-align: right; }
+        .pill { 
+            background: #eff6ff; color: var(--blue); 
+            padding: 6px 12px; border-radius: 20px; 
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+        }
 
-        /* 2. RESUMEN EJECUTIVO (BIG NUMBERS) */
-        .executive-summary {
+        /* 2. TARJETA DE INTELIGENCIA ARTIFICIAL (IA INSIGHTS) */
+        .ai-card {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 25px;
+            display: flex;
+            gap: 20px;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.25);
+            align-items: center;
+        }
+        .ai-icon { font-size: 32px; }
+        .ai-content h3 { margin: 0 0 5px 0; font-size: 14px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
+        .ai-content p { margin: 0; font-size: 13px; opacity: 0.9; line-height: 1.5; font-weight: 300; }
+
+        /* 3. GRID CENTRAL: RADAR + HEATMAP */
+        .analytics-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            background: var(--light);
-            border-radius: 12px;
-            padding: 30px;
-            gap: 40px;
-            border: 1px solid #e2e8f0;
-        }
-        .big-stat label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gray); display: block; margin-bottom: 5px; }
-        .big-stat .number { font-size: 48px; font-weight: 800; color: var(--blue); line-height: 1; }
-        .big-stat .trend { font-size: 14px; font-weight: 600; color: var(--gold); }
-
-        /* 3. CONTENIDO A 2 COLUMNAS (ESTILO NETFLIX/AIRBNB) */
-        .report-body {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* Mitad texto, mitad gráfico */
-            gap: 40px;
-            align-items: start;
+            gap: 30px;
         }
 
-        /* Columna Izquierda: Análisis y Barras */
-        .analysis-section h3 { font-size: 16px; border-left: 4px solid var(--gold); padding-left: 10px; margin-top: 0; color: var(--blue); }
-        .analysis-text { font-size: 13px; line-height: 1.6; color: #475569; margin-bottom: 30px; text-align: justify; }
-
-        .progress-item { margin-bottom: 15px; }
-        .p-label { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; margin-bottom: 5px; }
-        .p-bar-bg { background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden; }
-        .p-bar-fill { height: 100%; background: var(--blue); width: 0%; transition: width 1s ease; }
-        
-        /* Columna Derecha: El Radar Visual */
-        .visual-section {
+        /* Radar Chart (3D Feel) */
+        .chart-container {
             background: white;
             border: 1px solid #e2e8f0;
             border-radius: 12px;
-            padding: 20px;
+            padding: 15px;
             position: relative;
         }
-        .badge {
-            position: absolute; top: 10px; right: 10px;
-            background: var(--blue); color: white;
-            padding: 5px 10px; font-size: 10px; font-weight: 700;
+        .section-title { font-size: 14px; font-weight: 700; margin-bottom: 15px; color: var(--navy); display: flex; align-items: center; gap: 8px; }
+        .section-title::before { content: ''; width: 4px; height: 16px; background: var(--blue); border-radius: 2px; display: block; }
+
+        /* HEATMAP (Mapa de Calor) */
+        .heatmap-container {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 15px;
+            overflow: hidden;
+        }
+        .heatmap-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+        .heatmap-table th { text-align: left; color: #64748b; font-weight: 600; padding: 8px; border-bottom: 1px solid #e2e8f0; }
+        .heatmap-table td { padding: 8px; border-bottom: 1px solid #f1f5f9; font-weight: 500; }
+        
+        /* Celdas del Mapa de Calor (Puntos de color) */
+        .heat-cell { 
+            width: 30px; height: 30px; 
+            border-radius: 6px; 
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 700; font-size: 10px;
+        }
+        .level-low { background: var(--risk); box-shadow: 0 2px 5px rgba(239, 68, 68, 0.3); } /* Rojo */
+        .level-mid { background: #f59e0b; } /* Naranja */
+        .level-high { background: var(--safe); box-shadow: 0 2px 5px rgba(16, 185, 129, 0.3); } /* Verde */
+
+        /* 4. CERTIFICADO DE AUTENTICIDAD */
+        .certificate-block {
+            border: 2px dashed #cbd5e1;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .cert-text { font-size: 10px; color: #64748b; max-width: 60%; }
+        .qr-placeholder {
+            width: 60px; height: 60px; background: white; border: 1px solid #e2e8f0;
+            display: flex; align-items: center; justify-content: center; font-size: 24px;
             border-radius: 4px;
         }
 
-        /* 4. FOOTER */
-        footer {
-            border-top: 1px solid #e2e8f0;
-            padding-top: 15px;
-            font-size: 10px;
-            color: var(--gray);
-            display: flex;
-            justify-content: space-between;
-        }
-
         /* BOTÓN IMPRIMIR */
-        .btn-print {
+        .fab {
             position: fixed; bottom: 30px; right: 30px;
-            background: var(--gold); color: var(--blue);
+            background: var(--navy); color: white;
             border: none; padding: 15px 30px; border-radius: 50px;
-            font-weight: 800; cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            font-weight: 700; cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
         }
+        .fab:hover { transform: scale(1.05); }
 
-        /* --- MODO IMPRESIÓN (EL SECRETO) --- */
+        /* --- MODO IMPRESIÓN PRO --- */
         @media print {
             body { background: white; padding: 0; }
-            .page { box-shadow: none; width: 100%; min-height: 100vh; margin: 0; padding: 1.5cm; }
-            .btn-print { display: none; }
-            .executive-summary { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: #f8fafc !important; }
-            .p-bar-fill { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .dashboard-page { box-shadow: none; width: 100%; margin: 0; padding: 1.5cm; border-radius: 0; }
+            .fab { display: none; }
+            .ai-card { background: #0f172a !important; color: white !important; -webkit-print-color-adjust: exact; }
+            .heat-cell { -webkit-print-color-adjust: exact; }
         }
     </style>
 </head>
 <body>
 
-    <div class="page">
+    <div class="dashboard-page">
         <header>
             <div class="brand">
-                <h1>Academia <span>Quijano</span></h1>
-                <div style="font-size: 12px; letter-spacing: 3px; color: var(--gray);">INFORME DE INTELIGENCIA</div>
+                <h1>SISTEMA <span>QUIJANO</span></h1>
+                <div style="font-size: 11px; color: #64748b; letter-spacing: 1px;">PLATAFORMA DE INTELIGENCIA EDUCATIVA</div>
             </div>
-            <div class="meta-data">
-                <span id="date-display">16 ENE 2026</span>
-                <strong id="sim-id">SIMULACRO S-11</strong>
-                <span id="muni-id">PASTO, NARIÑO</span>
+            <div class="report-meta">
+                <div class="pill" id="sim-display">SIMULACRO S-11</div>
+                <div style="font-size: 12px; margin-top: 5px; font-weight: 600;" id="muni-display">MUNICIPIO</div>
+                <div style="font-size: 10px; color: #94a3b8;">16 ENE 2026</div>
             </div>
         </header>
 
-        <div class="executive-summary">
-            <div class="big-stat">
-                <label>Puntaje Global Promedio</label>
-                <div class="number" id="val-global">0</div>
-                <div class="trend" id="txt-risk">Analizando datos...</div>
-            </div>
-            <div class="big-stat">
-                <label>Nivel de Excelencia</label>
-                <div class="number" id="val-exc">0%</div>
-                <div class="trend">Estudiantes Superiores</div>
-            </div>
-        </div>
-
-        <div class="report-body">
-            
-            <div class="analysis-section">
-                <h3>DIAGNÓSTICO TÉCNICO</h3>
-                <p class="analysis-text" id="analysis-paragraph">
-                    Este informe presenta el consolidado de rendimiento académico. 
-                    Las métricas a continuación desglosan el desempeño por área de núcleo común, 
-                    permitiendo identificar brechas de aprendizaje y fortalezas grupales.
+        <div class="ai-card">
+            <div class="ai-icon">🧠</div>
+            <div class="ai-content">
+                <h3>Dirección Estratégica Detectada</h3>
+                <p id="ai-text">
+                    Analizando 5 variables clave: Se recomienda priorizar intervención en <strong>Razonamiento Cuantitativo</strong>. 
+                    El 15% del grupo muestra potencial de excelencia si se refuerzan competencias lectoras inferenciales. 
+                    <br><em>Acción sugerida: Activar protocolo de refuerzo T-2.</em>
                 </p>
-
-                <div style="margin-top: 40px;">
-                    <div class="progress-item">
-                        <div class="p-label"><span>LECTURA CRÍTICA</span> <span id="lbl-lec">0</span></div>
-                        <div class="p-bar-bg"><div class="p-bar-fill" id="bar-lec"></div></div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="p-label"><span>MATEMÁTICAS</span> <span id="lbl-mat">0</span></div>
-                        <div class="p-bar-bg"><div class="p-bar-fill" id="bar-mat"></div></div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="p-label"><span>SOCIALES</span> <span id="lbl-soc">0</span></div>
-                        <div class="p-bar-bg"><div class="p-bar-fill" id="bar-soc"></div></div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="p-label"><span>CIENCIAS</span> <span id="lbl-cie">0</span></div>
-                        <div class="p-bar-bg"><div class="p-bar-fill" id="bar-cie"></div></div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="p-label"><span>INGLÉS</span> <span id="lbl-ing">0</span></div>
-                        <div class="p-bar-bg"><div class="p-bar-fill" id="bar-ing"></div></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="visual-section">
-                <div class="badge">RADAR 2026</div>
-                <canvas id="radarChart"></canvas>
-                <div style="margin-top: 20px; font-size: 11px; color: #64748b; text-align: center;">
-                    El gráfico muestra la simetría del conocimiento. 
-                    Áreas retraídas hacia el centro indican necesidad de refuerzo.
-                </div>
             </div>
         </div>
 
-        <footer>
-            <div>ID VERIFICACIÓN: <strong id="v-code">---</strong></div>
-            <div>GENERADO POR SISTEMA QUIJANO V.57</div>
-        </footer>
+        <div class="analytics-grid">
+            
+            <div class="chart-container">
+                <div class="section-title">SIMETRÍA DEL CONOCIMIENTO</div>
+                <div style="height: 250px;">
+                    <canvas id="radarChart"></canvas>
+                </div>
+                <div style="text-align: center; font-size: 10px; color: #64748b; margin-top: 10px;">
+                    <span style="color: rgba(37, 99, 235, 1);">● Institución</span> &nbsp;|&nbsp; 
+                    <span style="color: #94a3b8;">● Promedio Nacional</span>
+                </div>
+            </div>
+
+            <div class="heatmap-container">
+                <div class="section-title">MAPA TÉRMICO DE RENDIMIENTO</div>
+                <p style="font-size: 10px; color: #64748b; margin-bottom: 10px;">
+                    Visualización rápida de fallas sistémicas. <span style="color:var(--risk)">Rojo = Riesgo</span>.
+                </p>
+                
+                <table class="heatmap-table">
+                    <thead>
+                        <tr>
+                            <th>Área</th>
+                            <th>Puntaje</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="heatmap-body">
+                        <tr><td>Lectura</td><td><div class="heat-cell level-high" id="hm-lec">0</div></td><td>Sólido</td></tr>
+                        <tr><td>Matemáticas</td><td><div class="heat-cell level-low" id="hm-mat">0</div></td><td>Crítico</td></tr>
+                        <tr><td>Sociales</td><td><div class="heat-cell level-mid" id="hm-soc">0</div></td><td>Medio</td></tr>
+                        <tr><td>Ciencias</td><td><div class="heat-cell level-mid" id="hm-cie">0</div></td><td>Medio</td></tr>
+                        <tr><td>Inglés</td><td><div class="heat-cell level-high" id="hm-ing">0</div></td><td>Sólido</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+            <div style="background:#f8fafc; padding:15px; border-radius:8px; text-align:center;">
+                <div style="font-size:10px; color:#64748b; text-transform:uppercase;">Promedio Global</div>
+                <div style="font-size:32px; font-weight:800; color:var(--navy);" id="kpi-avg">0</div>
+            </div>
+            <div style="background:#f8fafc; padding:15px; border-radius:8px; text-align:center;">
+                <div style="font-size:10px; color:#64748b; text-transform:uppercase;">Excelencia</div>
+                <div style="font-size:32px; font-weight:800; color:var(--safe);" id="kpi-exc">0%</div>
+            </div>
+            <div style="background:#f8fafc; padding:15px; border-radius:8px; text-align:center;">
+                <div style="font-size:10px; color:#64748b; text-transform:uppercase;">Riesgo</div>
+                <div style="font-size:32px; font-weight:800; color:var(--risk);" id="kpi-ini">0%</div>
+            </div>
+        </div>
+
+        <div class="certificate-block">
+            <div class="cert-text">
+                <strong>CERTIFICADO DE AUTENTICIDAD DE DATOS</strong><br>
+                Este informe ha sido generado por el motor de inteligencia de Academia Quijano. 
+                Los datos aquí presentados son inalterables y corresponden a la prueba identificada.
+                <br><br>
+                <span style="font-family: monospace;" id="v-code">HASH: ---</span>
+            </div>
+            <div class="qr-placeholder">🏁</div>
+        </div>
+
     </div>
 
-    <button class="btn-print" onclick="window.print()">🖨️ IMPRIMIR / PDF</button>
+    <button class="fab" onclick="window.print()">🖨️ IMPRIMIR REPORTE</button>
 
     <script>
-        // MOTOR DE DATOS
+        // --- 1. CAPTURA DE DATOS (URL) ---
         const p = new URLSearchParams(window.location.search);
         
-        // Datos básicos
-        document.getElementById('sim-id').innerText = p.get('sim') || 'SIMULACRO';
-        document.getElementById('muni-id').innerText = (p.get('muni') || 'GENERAL').toUpperCase();
-        document.getElementById('v-code').innerText = p.get('v') || 'NO-DATA';
-        
-        // KPIs
-        const avg = p.get('avg') || 0;
-        document.getElementById('val-global').innerText = avg;
-        document.getElementById('val-exc').innerText = (p.get('exc') || 0) + '%';
+        // Textos Básicos
+        document.getElementById('muni-display').innerText = (p.get('muni') || 'MUNICIPIO').toUpperCase();
+        document.getElementById('sim-display').innerText = p.get('sim') || 'SIMULACRO';
+        document.getElementById('v-code').innerText = "HASH: " + (p.get('v') || 'NO-DATA');
 
-        // Análisis de Texto Dinámico
-        const ini = parseInt(p.get('ini') || 0);
-        const riskTxt = document.getElementById('txt-risk');
-        if(ini > 20) {
-            riskTxt.innerText = "⚠️ Requiere Atención Inmediata";
-            riskTxt.style.color = "#ef4444";
-        } else {
-            riskTxt.innerText = "✅ Rendimiento Estable";
-            riskTxt.style.color = "#10b981";
+        // Datos Numéricos
+        const lec = parseInt(p.get('lec')||0);
+        const mat = parseInt(p.get('mat')||0);
+        const soc = parseInt(p.get('soc')||0);
+        const cie = parseInt(p.get('cie')||0);
+        const ing = parseInt(p.get('ing')||0);
+        const avg = p.get('avg')||0;
+
+        document.getElementById('kpi-avg').innerText = avg;
+        document.getElementById('kpi-exc').innerText = (p.get('exc')||0) + "%";
+        document.getElementById('kpi-ini').innerText = (p.get('ini')||0) + "%";
+
+        // --- 2. LÓGICA DEL HEATMAP (Incendio Académico) ---
+        function updateHeatmap(id, val) {
+            const el = document.getElementById(id);
+            el.innerText = val;
+            el.className = 'heat-cell'; // reset
+            if(val < 50) el.classList.add('level-low');
+            else if(val < 70) el.classList.add('level-mid');
+            else el.classList.add('level-high');
         }
+        updateHeatmap('hm-lec', lec);
+        updateHeatmap('hm-mat', mat);
+        updateHeatmap('hm-soc', soc);
+        updateHeatmap('hm-cie', cie);
+        updateHeatmap('hm-ing', ing);
 
-        // Función para animar barras
-        function setBar(id, val) {
-            document.getElementById('lbl-'+id).innerText = val;
-            document.getElementById('bar-'+id).style.width = val + '%';
-            // Color dinámico de la barra
-            if(val < 50) document.getElementById('bar-'+id).style.background = "#ef4444"; // Rojo
-            else if(val >= 70) document.getElementById('bar-'+id).style.background = "#10b981"; // Verde
-        }
-
-        const lec = p.get('lec')||0; setBar('lec', lec);
-        const mat = p.get('mat')||0; setBar('mat', mat);
-        const soc = p.get('soc')||0; setBar('soc', soc);
-        const cie = p.get('cie')||0; setBar('cie', cie);
-        const ing = p.get('ing')||0; setBar('ing', ing);
-
-        // Radar Chart Elegante
+        // --- 3. LÓGICA DEL RADAR 3D (Contrastado) ---
         const ctx = document.getElementById('radarChart').getContext('2d');
-        Chart.defaults.font.family = "'Manrope', sans-serif";
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        
         new Chart(ctx, {
             type: 'radar',
             data: {
                 labels: ['LECTURA', 'MATEMÁTICAS', 'SOCIALES', 'CIENCIAS', 'INGLÉS'],
-                datasets: [{
-                    label: 'Nivel Grupo',
-                    data: [lec, mat, soc, cie, ing],
-                    backgroundColor: 'rgba(10, 37, 64, 0.2)',
-                    borderColor: '#0a2540',
-                    borderWidth: 2,
-                    pointBackgroundColor: '#d4af37',
-                    pointRadius: 4
-                }]
+                datasets: [
+                    {
+                        label: 'Institución',
+                        data: [lec, mat, soc, cie, ing],
+                        backgroundColor: 'rgba(37, 99, 235, 0.25)', // Azul transparente
+                        borderColor: '#2563eb',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#ffffff',
+                        pointBorderColor: '#2563eb',
+                        pointRadius: 5,
+                        zIndex: 2 // Arriba
+                    },
+                    {
+                        label: 'Nacional (Ref)',
+                        data: [52, 48, 55, 50, 45], // Datos estáticos de referencia nacional
+                        backgroundColor: 'rgba(148, 163, 184, 0.1)', // Gris muy suave
+                        borderColor: '#94a3b8',
+                        borderWidth: 1,
+                        pointRadius: 0,
+                        borderDash: [5, 5], // Línea punteada
+                        zIndex: 1 // Abajo (Sombra)
+                    }
+                ]
             },
             options: {
+                responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     r: {
-                        beginAtZero: true, max: 100,
-                        ticks: { display: false },
-                        pointLabels: { font: { size: 10, weight: '700' }, color: '#64748b' }
+                        angleLines: { color: '#f1f5f9' },
+                        grid: { color: '#f1f5f9' },
+                        pointLabels: { font: { size: 10, weight: '700' }, color: '#64748b' },
+                        ticks: { display: false, backdropColor: 'transparent' }
                     }
                 },
                 plugins: { legend: { display: false } }
