@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informe Gerencial V.67 | Sistema Quijano</title>
+    <title>Informe Gerencial V.68 | Sistema Quijano</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
@@ -15,7 +15,7 @@
             --c-gold: #b45309;  /* Dorado Ejecutivo */
             --c-gray: #f1f5f9;
             --risk: #dc2626; --warn: #d97706; --safe: #16a34a;
-            --shadow-pro: 0 10px 30px -5px rgba(0, 0, 0, 0.1); /* Sombra Profesional */
+            --shadow-pro: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
         }
 
         body {
@@ -36,7 +36,7 @@
             overflow: hidden; position: relative;
         }
 
-        /* --- PÁGINA 1: PORTADA (PERFECTA) --- */
+        /* --- PÁGINA 1: PORTADA --- */
         .cover-page {
             background: linear-gradient(180deg, #0f172a 0%, #0f172a 85%, #1e3a8a 100%) !important;
             color: white; padding: 3cm; justify-content: center; text-align: center;
@@ -48,7 +48,7 @@
         .cover-sub { font-size: 16px; font-weight: 400; letter-spacing: 3px; text-transform: uppercase; opacity: 0.9; }
         .cover-footer { position: absolute; bottom: 2cm; left:0; right:0; font-size: 11px; opacity: 0.7; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; width: 80%; margin: auto; }
 
-        /* --- PÁGINA 2: CARTA (PERFECTA) --- */
+        /* --- PÁGINA 2: CARTA --- */
         .letter-page { padding: 2.5cm; }
         .letter-header { border-bottom: 3px solid var(--c-dark); padding-bottom: 20px; margin-bottom: 30px; }
         .letter-title { font-size: 20px; font-weight: 800; color: var(--c-blue); text-transform: uppercase; }
@@ -58,10 +58,9 @@
         .signature-block { margin-top: auto; }
         .sign-line { width: 250px; border-bottom: 2px solid #0f172a; margin-bottom: 15px; }
 
-        /* --- PÁGINA 3+: MATRIZ (CORTE LIMPIO MEJORADO) --- */
+        /* --- PÁGINA 3+: MATRIZ (CORTE LIMPIO V.68) --- */
         .matrix-page { 
             padding: 2cm; 
-            padding-bottom: 50px; /* Margen de seguridad inferior */
             height: auto !important; 
             min-height: 27.94cm; 
             display: block; 
@@ -81,15 +80,15 @@
         .bg-warn { background: #ffedd5; color: #c2410c; font-weight:700; border-radius: 4px; padding: 3px 0; display:block; width: 80%; margin: 0 auto; }
         .bg-good { background: #dcfce7; color: var(--safe); font-weight:700; border-radius: 4px; padding: 3px 0; display:block; width: 80%; margin: 0 auto; }
 
-        /* --- PÁGINA 4: GRÁFICAS (PRO CON BARRA LATERAL) --- */
+        /* --- PÁGINA 4: GRÁFICAS --- */
         .charts-page { padding: 2cm; display: flex; flex-direction: column; justify-content: center; gap: 50px; }
         
         .chart-box { 
             background: white; border-radius: 12px; padding: 30px; 
             box-shadow: var(--shadow-pro); 
             border: 1px solid #f1f5f9;
-            border-left: 6px solid var(--c-blue); /* BARRA LATERAL PROFESIONAL */
-            background: linear-gradient(to right, #f8fafc, #ffffff 10%); /* Sutil degradado interno */
+            border-left: 6px solid var(--c-blue);
+            background: linear-gradient(to right, #f8fafc, #ffffff 10%);
         }
         .chart-heading { text-align: center; font-weight: 800; margin-bottom: 25px; color: var(--c-blue); text-transform: uppercase; font-size: 13px; letter-spacing: 1px; }
 
@@ -104,17 +103,18 @@
         }
         .donut-center-txt { position: absolute; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; }
 
-        /* --- PÁGINA 5: DICTAMEN (DISTRIBUIDO Y ROBUSTO) --- */
+        /* --- PÁGINA 5: DICTAMEN (LETRA GRANDE V.68) --- */
         .analysis-page { padding: 2cm; justify-content: space-between; }
-        /* GAP AUMENTADO para llenar la página */
         .analysis-container { flex-grow: 1; display: flex; flex-direction: column; gap: 25px; justify-content: center; margin: 20px 0; }
         
         .analysis-item { 
             background: #fff; border: 1px solid #e2e8f0; padding: 20px 25px; 
             border-radius: 8px; border-left: 6px solid; box-shadow: var(--shadow-pro);
         }
-        .analysis-item h3 { margin: 0 0 8px 0; font-size: 12px; color: var(--c-dark); text-transform: uppercase; font-weight: 800; }
-        .analysis-text { font-size: 11px; line-height: 1.7; color: #475569; text-align: justify; margin: 0; }
+        /* Títulos más grandes */
+        .analysis-item h3 { margin: 0 0 10px 0; font-size: 14px; color: var(--c-dark); text-transform: uppercase; font-weight: 800; }
+        /* Texto más grande y con más aire */
+        .analysis-text { font-size: 13px; line-height: 1.8; color: #475569; text-align: justify; margin: 0; }
 
         .bor-lec { border-left-color: var(--c-blue); }
         .bor-mat { border-left-color: var(--risk); }
@@ -122,9 +122,8 @@
         .bor-cie { border-left-color: var(--safe); }
         .bor-ing { border-left-color: var(--c-gold); }
 
-        /* Pie de página técnico */
         .legal-footer { 
-            text-align: center; font-size: 9px; color: #94a3b8; 
+            text-align: center; font-size: 10px; color: #94a3b8; 
             border-top: 1px solid #e2e8f0; padding-top: 15px; margin-top: auto; 
             font-family: monospace; letter-spacing: 0.5px;
         }
@@ -133,11 +132,19 @@
         @media print {
             @page { margin: 0; size: Letter; } 
             body { background: white; padding: 0; gap: 0; }
+            
             .page { 
                 margin: 0; width: 21.59cm; height: 27.94cm; 
                 box-shadow: none; page-break-after: always; break-inside: avoid; overflow: hidden;
             }
-            .matrix-page { height: auto !important; min-height: 27.94cm; overflow: visible !important; }
+            
+            /* SOLUCIÓN AL CORTE DE TABLA: Colchón de seguridad */
+            .matrix-page { 
+                height: auto !important; min-height: 27.94cm; 
+                overflow: visible !important; 
+                padding-bottom: 50px !important; /* ESTO EVITA QUE SE CORTE LA ÚLTIMA FILA */
+            }
+            
             .page:last-child { page-break-after: auto; }
             .fab-print { display: none; }
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
@@ -294,7 +301,7 @@
 
         <div class="legal-footer">
             CERTIFICADO DE AUTENTICIDAD DIGITAL • HASH: <span id="v-hash">---</span><br>
-            SISTEMA DE GESTIÓN DE CALIDAD QUIJANO V.67 • ISO 9001 COMPLIANT
+            SISTEMA DE GESTIÓN DE CALIDAD QUIJANO V.68 • ISO 9001 COMPLIANT
         </div>
     </div>
 
@@ -362,7 +369,7 @@
             options: { indexAxis: 'y', plugins: { legend: false }, scales: { x: { beginAtZero:true, max:100 } } }
         });
 
-        // Donut
+        // Donut (LEYENDA MEJORADA)
         let levels = { low:0, mid:0, high:0 }; students.forEach(s=>{ if(s.g<250) levels.low++; else if(s.g<320) levels.mid++; else levels.high++; });
         new Chart(document.getElementById('donutChart'), {
             type: 'doughnut',
@@ -374,7 +381,20 @@
                     borderWidth: 5, borderColor: '#ffffff', hoverOffset: 15
                 }]
             },
-            options: { cutout: '70%', plugins: { legend: { position:'bottom', labels:{padding:20, usePointStyle:true} } } }
+            options: { 
+                cutout: '70%', 
+                plugins: { 
+                    legend: { 
+                        position:'bottom', 
+                        labels:{
+                            padding: 25, // Más espacio
+                            usePointStyle: true, // Iconos redondos
+                            pointStyle: 'circle',
+                            font: { size: 12, weight: '600' } // Letra más grande en leyenda
+                        } 
+                    } 
+                } 
+            }
         });
 
         // Params & Date
