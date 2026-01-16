@@ -3,18 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informe Gerencial V.68 | Sistema Quijano</title>
+    <title>Informe Gerencial V.69 FINAL | Sistema Quijano</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 
     <style>
         :root {
-            --c-dark: #0f172a;  /* Navy Profundo */
-            --c-blue: #1d4ed8;  /* Azul Corporativo */
-            --c-gold: #b45309;  /* Dorado Ejecutivo */
-            --c-gray: #f1f5f9;
-            --risk: #dc2626; --warn: #d97706; --safe: #16a34a;
+            --c-dark: #0f172a; --c-blue: #1d4ed8; --c-gold: #b45309;
+            --c-gray: #f1f5f9; --risk: #dc2626; --warn: #d97706; --safe: #16a34a;
             --shadow-pro: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
         }
 
@@ -28,12 +25,9 @@
 
         /* --- ARQUITECTURA TAMAÑO CARTA (LETTER) --- */
         .page {
-            background: white;
-            width: 21.59cm; height: 27.94cm; 
-            box-shadow: var(--shadow-pro);
-            box-sizing: border-box;
-            display: flex; flex-direction: column;
-            overflow: hidden; position: relative;
+            background: white; width: 21.59cm; height: 27.94cm; 
+            box-shadow: var(--shadow-pro); box-sizing: border-box;
+            display: flex; flex-direction: column; overflow: hidden; position: relative;
         }
 
         /* --- PÁGINA 1: PORTADA --- */
@@ -58,93 +52,66 @@
         .signature-block { margin-top: auto; }
         .sign-line { width: 250px; border-bottom: 2px solid #0f172a; margin-bottom: 15px; }
 
-        /* --- PÁGINA 3+: MATRIZ (CORTE LIMPIO V.68) --- */
+        /* --- PÁGINA 3+: MATRIZ (FLUJO CORRECTO V.69) --- */
         .matrix-page { 
             padding: 2cm; 
-            height: auto !important; 
+            height: auto !important; /* Permite crecer infinitamente */
             min-height: 27.94cm; 
             display: block; 
         } 
         .section-title { font-size: 18px; font-weight: 800; color: var(--c-dark); border-left: 6px solid var(--c-blue); padding-left: 15px; margin-bottom: 30px; text-transform: uppercase; }
 
         .data-table { width: 100%; border-collapse: collapse; font-size: 10px; margin-bottom: 20px; }
-        .data-table thead { display: table-header-group; } 
-        /* FUERZA BRUTA PARA EVITAR CORTES */
-        .data-table tr { page-break-inside: avoid !important; break-inside: avoid !important; } 
+        .data-table thead { display: table-header-group; } /* Repite encabezado al imprimir */
+        .data-table tr { page-break-inside: avoid !important; break-inside: avoid !important; } /* No corta filas */
         
         .data-table th { background: var(--c-dark); color: white; padding: 10px 5px; text-transform: uppercase; letter-spacing: 0.5px; font-size: 9px; }
         .data-table td { padding: 8px 5px; border-bottom: 1px solid #e2e8f0; text-align: center; color: #334155; }
         .data-table tr:nth-child(even) { background: #f8fafc; }
         
+        /* Fila de totales final (Ya no es tfoot) */
+        .final-row-total td { background: #e2e8f0; font-weight: 900; border-top: 3px solid var(--c-dark); font-size: 12px; padding: 15px 5px; }
+
         .bg-crit { background: #fee2e2; color: var(--risk); font-weight:700; border-radius: 4px; padding: 3px 0; display:block; width: 80%; margin: 0 auto; }
         .bg-warn { background: #ffedd5; color: #c2410c; font-weight:700; border-radius: 4px; padding: 3px 0; display:block; width: 80%; margin: 0 auto; }
         .bg-good { background: #dcfce7; color: var(--safe); font-weight:700; border-radius: 4px; padding: 3px 0; display:block; width: 80%; margin: 0 auto; }
 
-        /* --- PÁGINA 4: GRÁFICAS --- */
+        /* --- PÁGINA 4: GRÁFICAS (DONUT PLANO) --- */
         .charts-page { padding: 2cm; display: flex; flex-direction: column; justify-content: center; gap: 50px; }
         
         .chart-box { 
             background: white; border-radius: 12px; padding: 30px; 
-            box-shadow: var(--shadow-pro); 
-            border: 1px solid #f1f5f9;
+            box-shadow: var(--shadow-pro); border: 1px solid #f1f5f9;
             border-left: 6px solid var(--c-blue);
             background: linear-gradient(to right, #f8fafc, #ffffff 10%);
         }
         .chart-heading { text-align: center; font-weight: 800; margin-bottom: 25px; color: var(--c-blue); text-transform: uppercase; font-size: 13px; letter-spacing: 1px; }
 
-        /* DONUT ULTRA 3D */
-        .donut-wrapper { 
-            position: relative; height: 350px; 
+        /* DONUT SIMPLE (SIN 3D) */
+        .donut-simple-container { 
+            position: relative; height: 350px; width: 350px; margin: 0 auto;
             display: flex; justify-content: center; align-items: center;
-            border-radius: 50%;
-            box-shadow: inset 5px 5px 15px rgba(0,0,0,0.05), inset -5px -5px 15px rgba(255,255,255,0.8), 10px 10px 30px rgba(0,0,0,0.15);
-            width: 350px; margin: 0 auto; background: white; padding: 20px;
-            box-sizing: border-box;
         }
         .donut-center-txt { position: absolute; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; }
 
-        /* --- PÁGINA 5: DICTAMEN (LETRA GRANDE V.68) --- */
+        /* --- PÁGINA 5: DICTAMEN --- */
         .analysis-page { padding: 2cm; justify-content: space-between; }
         .analysis-container { flex-grow: 1; display: flex; flex-direction: column; gap: 25px; justify-content: center; margin: 20px 0; }
-        
-        .analysis-item { 
-            background: #fff; border: 1px solid #e2e8f0; padding: 20px 25px; 
-            border-radius: 8px; border-left: 6px solid; box-shadow: var(--shadow-pro);
-        }
-        /* Títulos más grandes */
+        .analysis-item { background: #fff; border: 1px solid #e2e8f0; padding: 20px 25px; border-radius: 8px; border-left: 6px solid; box-shadow: var(--shadow-pro); }
         .analysis-item h3 { margin: 0 0 10px 0; font-size: 14px; color: var(--c-dark); text-transform: uppercase; font-weight: 800; }
-        /* Texto más grande y con más aire */
         .analysis-text { font-size: 13px; line-height: 1.8; color: #475569; text-align: justify; margin: 0; }
-
-        .bor-lec { border-left-color: var(--c-blue); }
-        .bor-mat { border-left-color: var(--risk); }
-        .bor-soc { border-left-color: var(--warn); }
-        .bor-cie { border-left-color: var(--safe); }
+        .bor-lec { border-left-color: var(--c-blue); } .bor-mat { border-left-color: var(--risk); }
+        .bor-soc { border-left-color: var(--warn); } .bor-cie { border-left-color: var(--safe); }
         .bor-ing { border-left-color: var(--c-gold); }
 
-        .legal-footer { 
-            text-align: center; font-size: 10px; color: #94a3b8; 
-            border-top: 1px solid #e2e8f0; padding-top: 15px; margin-top: auto; 
-            font-family: monospace; letter-spacing: 0.5px;
-        }
+        .legal-footer { text-align: center; font-size: 10px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 15px; margin-top: auto; font-family: monospace; letter-spacing: 0.5px; }
 
         /* --- IMPRESIÓN --- */
         @media print {
             @page { margin: 0; size: Letter; } 
             body { background: white; padding: 0; gap: 0; }
-            
-            .page { 
-                margin: 0; width: 21.59cm; height: 27.94cm; 
-                box-shadow: none; page-break-after: always; break-inside: avoid; overflow: hidden;
-            }
-            
-            /* SOLUCIÓN AL CORTE DE TABLA: Colchón de seguridad */
-            .matrix-page { 
-                height: auto !important; min-height: 27.94cm; 
-                overflow: visible !important; 
-                padding-bottom: 50px !important; /* ESTO EVITA QUE SE CORTE LA ÚLTIMA FILA */
-            }
-            
+            .page { margin: 0; width: 21.59cm; height: 27.94cm; box-shadow: none; page-break-after: always; break-inside: avoid; overflow: hidden; }
+            .matrix-page { height: auto !important; min-height: 27.94cm; overflow: visible !important; }
             .page:last-child { page-break-after: auto; }
             .fab-print { display: none; }
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
@@ -175,27 +142,15 @@
                 <strong>EMISIÓN CERTIFICADA:</strong><br><span id="date-gen">--/--/----</span>
             </div>
         </div>
-        
         <div class="letter-body-container">
             <div class="letter-body">
                 <p><strong>HONORABLE ALCALDÍA MUNICIPAL Y SECRETARÍA DE EDUCACIÓN:</strong></p>
-                <p>
-                    En calidad de consultores externos especializados en medición y evaluación educativa, 
-                    la <strong>Academia Quijano</strong> hace entrega formal del presente dictamen técnico.
-                </p>
-                <p>
-                    El siguiente informe no constituye un simple listado de calificaciones. Representa un análisis 
-                    de inteligencia de datos diseñado para identificar <strong>brechas de competencia</strong> específicas, 
-                    evaluar la dispersión de los resultados y proyectar el potencial de acceso a educación superior pública.
-                </p>
-                <p>
-                    Se incorpora un análisis de desviación estándar para determinar la homogeneidad del aprendizaje en el aula, 
-                    así como una proyección de percentiles nacionales.
-                </p>
+                <p>En calidad de consultores externos especializados en medición y evaluación educativa, la <strong>Academia Quijano</strong> hace entrega formal del presente dictamen técnico.</p>
+                <p>El siguiente informe no constituye un simple listado de calificaciones. Representa un análisis de inteligencia de datos diseñado para identificar <strong>brechas de competencia</strong> específicas, evaluar la dispersión de los resultados y proyectar el potencial de acceso a educación superior pública.</p>
+                <p>Se incorpora un análisis de desviación estándar para determinar la homogeneidad del aprendizaje en el aula, así como una proyección de percentiles nacionales.</p>
                 <p>Quedamos a su entera disposición para la socialización de estos hallazgos.</p>
             </div>
         </div>
-
         <div class="signature-block">
             <div class="sign-line"></div>
             <strong>JUAN ÁNGEL RODRÍGUEZ BASANTE</strong><br>
@@ -211,21 +166,13 @@
                 <tr>
                     <th style="width:30px;">#</th>
                     <th>Estudiante Evaluado</th>
-                    <th style="width:50px;">LEC</th>
-                    <th style="width:50px;">MAT</th>
-                    <th style="width:50px;">SOC</th>
-                    <th style="width:50px;">CIE</th>
-                    <th style="width:50px;">ING</th>
-                    <th style="width:60px;">GLOBAL</th>
+                    <th style="width:50px;">LEC</th><th style="width:50px;">MAT</th><th style="width:50px;">SOC</th>
+                    <th style="width:50px;">CIE</th><th style="width:50px;">ING</th><th style="width:60px;">GLOBAL</th>
                 </tr>
             </thead>
             <tbody id="table-body">
                 </tbody>
-            <tfoot>
-                <tr style="background:#e2e8f0; font-weight:800; border-top:2px solid var(--c-dark);" id="table-footer">
-                    </tr>
-            </tfoot>
-        </table>
+            </table>
         
         <div style="font-size: 9px; color: #64748b; text-align: center; margin-top: 10px;">
             * Convención: Rojo (0-45) Crítico | Amarillo (46-65) Alerta | Verde (66-100) Óptimo.
@@ -234,17 +181,13 @@
 
     <div class="page charts-page">
         <div class="section-title">Indicadores Visuales de Gestión</div>
-
         <div class="chart-box">
             <div class="chart-heading">Ranking de Desempeño Promedio por Asignatura</div>
-            <div style="height: 250px;">
-                <canvas id="barChart"></canvas>
-            </div>
+            <div style="height: 250px;"><canvas id="barChart"></canvas></div>
         </div>
-
         <div class="chart-box" style="display: flex; flex-direction: column; align-items: center;">
             <div class="chart-heading">Distribución Poblacional por Niveles</div>
-            <div class="donut-wrapper">
+            <div class="donut-simple-container">
                 <canvas id="donutChart"></canvas>
                 <div class="donut-center-txt">
                     <div style="font-size: 36px; font-weight: 900; color: var(--c-dark);" id="total-students">0</div>
@@ -256,91 +199,38 @@
 
     <div class="page analysis-page">
         <div class="section-title">Dictamen Técnico Descriptivo Final</div>
-
         <div class="analysis-container">
-            <div class="analysis-item bor-lec">
-                <h3>1. Componente Lector y Comunicativo</h3>
-                <p class="analysis-text" id="desc-lec">
-                    El comportamiento del grupo en Lectura Crítica arroja un promedio de <span id="avg-lec-txt" style="font-weight:700">0</span>. 
-                    Se observa que la competencia comunicativa se mantiene estable, sirviendo como base para el desempeño en otras áreas.
-                </p>
-            </div>
-
-            <div class="analysis-item bor-mat">
-                <h3>2. Razonamiento Cuantitativo</h3>
-                <p class="analysis-text" id="desc-mat">
-                    El área de Matemáticas registra una media de <span id="avg-mat-txt" style="font-weight:700">0</span>. 
-                    Los datos sugieren una dispersión en la resolución de problemas, lo que impacta el puntaje global proyectado.
-                </p>
-            </div>
-
-            <div class="analysis-item bor-soc">
-                <h3>3. Competencias Ciudadanas y Sociales</h3>
-                <p class="analysis-text" id="desc-soc">
-                    En Sociales y Ciudadanas, el promedio se ubica en <span id="avg-soc-txt" style="font-weight:700">0</span>.
-                    El grupo demuestra comprensión de fenómenos sociales básicos, aunque se identifican oportunidades en el análisis de multiperspectivismo.
-                </p>
-            </div>
-
-            <div class="analysis-item bor-cie">
-                <h3>4. Pensamiento Científico</h3>
-                <p class="analysis-text" id="desc-cie">
-                    Ciencias Naturales presenta un puntaje medio de <span id="avg-cie-txt" style="font-weight:700">0</span>.
-                    El análisis de indagación y uso comprensivo del conocimiento científico muestra homogeneidad en el grupo evaluado.
-                </p>
-            </div>
-
-            <div class="analysis-item bor-ing">
-                <h3>5. Competencia en Segunda Lengua</h3>
-                <p class="analysis-text" id="desc-ing">
-                    Inglés cierra la evaluación con un promedio de <span id="avg-ing-txt" style="font-weight:700">0</span>. 
-                    La mayoría de la población se ubica en las bandas iniciales del Marco Común Europeo.
-                </p>
-            </div>
+            <div class="analysis-item bor-lec"><h3>1. Componente Lector y Comunicativo</h3><p class="analysis-text" id="desc-lec">El comportamiento del grupo en Lectura Crítica arroja un promedio de <span id="avg-lec-txt" style="font-weight:700">0</span>. Se observa que la competencia comunicativa se mantiene estable, sirviendo como base para el desempeño en otras áreas.</p></div>
+            <div class="analysis-item bor-mat"><h3>2. Razonamiento Cuantitativo</h3><p class="analysis-text" id="desc-mat">El área de Matemáticas registra una media de <span id="avg-mat-txt" style="font-weight:700">0</span>. Los datos sugieren una dispersión en la resolución de problemas, lo que impacta el puntaje global proyectado.</p></div>
+            <div class="analysis-item bor-soc"><h3>3. Competencias Ciudadanas y Sociales</h3><p class="analysis-text" id="desc-soc">En Sociales y Ciudadanas, el promedio se ubica en <span id="avg-soc-txt" style="font-weight:700">0</span>. El grupo demuestra comprensión de fenómenos sociales básicos, aunque se identifican oportunidades en el análisis de multiperspectivismo.</p></div>
+            <div class="analysis-item bor-cie"><h3>4. Pensamiento Científico</h3><p class="analysis-text" id="desc-cie">Ciencias Naturales presenta un puntaje medio de <span id="avg-cie-txt" style="font-weight:700">0</span>. El análisis de indagación y uso comprensivo del conocimiento científico muestra homogeneidad en el grupo evaluado.</p></div>
+            <div class="analysis-item bor-ing"><h3>5. Competencia en Segunda Lengua</h3><p class="analysis-text" id="desc-ing">Inglés cierra la evaluación con un promedio de <span id="avg-ing-txt" style="font-weight:700">0</span>. La mayoría de la población se ubica en las bandas iniciales del Marco Común Europeo.</p></div>
         </div>
-
-        <div class="legal-footer">
-            CERTIFICADO DE AUTENTICIDAD DIGITAL • HASH: <span id="v-hash">---</span><br>
-            SISTEMA DE GESTIÓN DE CALIDAD QUIJANO V.68 • ISO 9001 COMPLIANT
-        </div>
+        <div class="legal-footer">CERTIFICADO DE AUTENTICIDAD DIGITAL • HASH: <span id="v-hash">---</span><br>SISTEMA DE GESTIÓN DE CALIDAD QUIJANO V.69 FINAL</div>
     </div>
 
     <button class="fab-print" onclick="window.print()">🖨️ IMPRIMIR INFORME</button>
 
     <script>
-        // --- SIMULACIÓN MASIVA (40 ALUMNOS para probar salto) ---
-        const base = [
-            { name: "AGUIRRE DAVILA DANA", l:71, m:68, s:70, c:75, i:80, g:364 },
-            { name: "ANACONA BOLAÑOS ANDRES", l:65, m:45, s:60, c:55, i:45, g:270 },
-            { name: "BENAVIDES SOFIA", l:82, m:78, s:75, c:80, i:85, g:400 },
-            { name: "CAICEDO JUAN ESTEBAN", l:55, m:45, s:50, c:52, i:40, g:242 }
-        ];
-        let students = [];
-        // Multiplicamos para tener 40 alumnos y forzar el salto de página
-        for(let k=0; k<10; k++) students = students.concat(base.map(s => ({...s, name: s.name + " " + (k+1)})));
+        // --- SIMULACIÓN MASIVA (40 ALUMNOS) ---
+        const base = [{ name: "AGUIRRE DAVILA DANA", l:71, m:68, s:70, c:75, i:80, g:364 },{ name: "ANACONA BOLAÑOS ANDRES", l:65, m:45, s:60, c:55, i:45, g:270 },{ name: "BENAVIDES SOFIA", l:82, m:78, s:75, c:80, i:85, g:400 },{ name: "CAICEDO JUAN ESTEBAN", l:55, m:45, s:50, c:52, i:40, g:242 }];
+        let students = []; for(let k=0; k<10; k++) students = students.concat(base.map(s => ({...s, name: s.name + " " + (k+1)})));
 
-        // --- LÓGICA ---
+        // --- LÓGICA TABLA Y TOTALES ---
         const tbody = document.getElementById('table-body');
         let sum = {l:0,m:0,s:0,c:0,i:0,g:0};
         function color(v) { if(v<=45) return 'bg-crit'; if(v<=65) return 'bg-warn'; return 'bg-good'; }
 
+        // 1. Llenar estudiantes
         students.forEach((s,i) => {
             sum.l+=s.l; sum.m+=s.m; sum.s+=s.s; sum.c+=s.c; sum.i+=s.i; sum.g+=s.g;
-            tbody.innerHTML += `<tr>
-                <td>${i+1}</td><td style="text-align:left; font-weight:600;">${s.name}</td>
-                <td><span class="${color(s.l)}">${s.l}</span></td><td><span class="${color(s.m)}">${s.m}</span></td>
-                <td><span class="${color(s.s)}">${s.s}</span></td><td><span class="${color(s.c)}">${s.c}</span></td>
-                <td><span class="${color(s.i)}">${s.i}</span></td><td><strong>${s.g}</strong></td>
-            </tr>`;
+            tbody.innerHTML += `<tr><td>${i+1}</td><td style="text-align:left; font-weight:600;">${s.name}</td><td><span class="${color(s.l)}">${s.l}</span></td><td><span class="${color(s.m)}">${s.m}</span></td><td><span class="${color(s.s)}">${s.s}</span></td><td><span class="${color(s.c)}">${s.c}</span></td><td><span class="${color(s.i)}">${s.i}</span></td><td><strong>${s.g}</strong></td></tr>`;
         });
 
+        // 2. Calcular y añadir la FILA FINAL DE TOTALES (Una sola vez al final)
         const c = students.length;
         const avg = {l:Math.round(sum.l/c), m:Math.round(sum.m/c), s:Math.round(sum.s/c), c:Math.round(sum.c/c), i:Math.round(sum.i/c), g:Math.round(sum.g/c)};
-
-        document.getElementById('table-footer').innerHTML = `
-            <td colspan="2" style="text-align:right;">PROMEDIO:</td>
-            <td>${avg.l}</td><td>${avg.m}</td><td>${avg.s}</td><td>${avg.c}</td><td>${avg.i}</td><td>${avg.g}</td>
-        `;
+        tbody.innerHTML += `<tr class="final-row-total"><td colspan="2" style="text-align:right;">PROMEDIO INSTITUCIONAL:</td><td>${avg.l}</td><td>${avg.m}</td><td>${avg.s}</td><td>${avg.c}</td><td>${avg.i}</td><td>${avg.g}</td></tr>`;
 
         // Textos
         document.getElementById('total-students').innerText = c;
@@ -352,49 +242,15 @@
 
         // GRÁFICOS
         Chart.defaults.font.family = "'Inter', sans-serif";
-        
-        // Barras
         function getBarColor(val) { if(val<=60) return '#dc2626'; if(val<=75) return '#d97706'; return '#1d4ed8'; }
-        
         new Chart(document.getElementById('barChart'), {
-            type: 'bar',
-            data: {
-                labels: ['LECTURA', 'SOCIALES', 'CIENCIAS', 'INGLÉS', 'MATEMÁTICAS'],
-                datasets: [{
-                    data: [avg.l, avg.s, avg.c, avg.m, avg.i],
-                    backgroundColor: [getBarColor(avg.l), getBarColor(avg.s), getBarColor(avg.c), getBarColor(avg.m), getBarColor(avg.i)],
-                    borderRadius: 6, barPercentage: 0.6
-                }]
-            },
+            type: 'bar', data: { labels: ['LECTURA', 'SOCIALES', 'CIENCIAS', 'INGLÉS', 'MATEMÁTICAS'], datasets: [{ data: [avg.l, avg.s, avg.c, avg.m, avg.i], backgroundColor: [getBarColor(avg.l), getBarColor(avg.s), getBarColor(avg.c), getBarColor(avg.m), getBarColor(avg.i)], borderRadius: 6, barPercentage: 0.6 }] },
             options: { indexAxis: 'y', plugins: { legend: false }, scales: { x: { beginAtZero:true, max:100 } } }
         });
-
-        // Donut (LEYENDA MEJORADA)
         let levels = { low:0, mid:0, high:0 }; students.forEach(s=>{ if(s.g<250) levels.low++; else if(s.g<320) levels.mid++; else levels.high++; });
         new Chart(document.getElementById('donutChart'), {
-            type: 'doughnut',
-            data: {
-                labels: ['Bajo (<250)', 'Medio (250-320)', 'Alto (>320)'],
-                datasets: [{
-                    data: [levels.low, levels.mid, levels.high],
-                    backgroundColor: ['#dc2626', '#f59e0b', '#16a34a'],
-                    borderWidth: 5, borderColor: '#ffffff', hoverOffset: 15
-                }]
-            },
-            options: { 
-                cutout: '70%', 
-                plugins: { 
-                    legend: { 
-                        position:'bottom', 
-                        labels:{
-                            padding: 25, // Más espacio
-                            usePointStyle: true, // Iconos redondos
-                            pointStyle: 'circle',
-                            font: { size: 12, weight: '600' } // Letra más grande en leyenda
-                        } 
-                    } 
-                } 
-            }
+            type: 'doughnut', data: { labels: ['Bajo (<250)', 'Medio (250-320)', 'Alto (>320)'], datasets: [{ data: [levels.low, levels.mid, levels.high], backgroundColor: ['#dc2626', '#f59e0b', '#16a34a'], borderWidth: 5, borderColor: '#ffffff', hoverOffset: 15 }] },
+            options: { cutout: '70%', plugins: { legend: { position:'bottom', labels:{padding:25, usePointStyle:true, pointStyle:'circle', font:{size:12, weight:'600'}} } } }
         });
 
         // Params & Date
@@ -402,7 +258,6 @@
         if(p.get('rad')) document.getElementById('rad-id').innerText = p.get('rad');
         if(p.get('v')) document.getElementById('v-hash').innerText = p.get('v');
         document.getElementById('date-gen').innerText = new Date().toLocaleDateString('es-CO');
-
     </script>
 </body>
 </html>
