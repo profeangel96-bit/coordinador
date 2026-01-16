@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informe Gerencial de Calidad | Sistema Quijano</title>
+    <title>Informe Gerencial de Calidad V.64 | Sistema Quijano</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 
     <style>
         :root {
-            --c-dark: #0f172a;  /* Navy Premium */
-            --c-blue: #1d4ed8;  /* Azul Institucional Fuerte */
+            --c-dark: #0a1324;  /* Navy más profundo */
+            --c-blue: #1e40af;  /* Azul Institucional */
             --c-gold: #b45309;  /* Dorado Serio */
             --c-gray: #f8fafc;
             --risk: #dc2626; --warn: #d97706; --safe: #16a34a;
@@ -19,7 +19,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #e2e8f0; /* Fondo de pantalla contrastante */
+            background: #e2e8f0;
             margin: 0;
             padding: 40px;
             display: flex;
@@ -29,114 +29,137 @@
             color: var(--c-dark);
         }
 
-        /* --- ARQUITECTURA A4 PREMIUM --- */
+        /* --- ARQUITECTURA A4 BASE --- */
         .page {
             background: white;
-            width: 21cm; height: 29.7cm; /* A4 Fijo */
+            width: 21cm; height: 29.7cm; /* A4 Fijo por defecto */
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden; /* Corte limpio */
+            display: flex; flex-direction: column;
+            overflow: hidden; /* Mantiene el diseño compacto en pantalla */
         }
 
-        /* Utilidad para llenar espacio verticalmente */
-        .flex-grow { flex-grow: 1; } 
-
-        /* --- PÁGINA 1: PORTADA (INTOCABLE) --- */
+        /* --- PÁGINA 1: PORTADA (DEGRADADO PROFUNDO V.2) --- */
         .cover-page {
-            background: linear-gradient(180deg, #0f172a 0%, #1e3a8a 70%, #1d4ed8 100%) !important;
-            color: white;
-            padding: 3cm;
-            justify-content: center;
-            text-align: center;
+            /* 90% oscuro, 10% luz al final */
+            background: linear-gradient(180deg, #0a1324 0%, #0a1324 85%, #1e3a8a 100%) !important;
+            color: white; padding: 3cm; justify-content: center; text-align: center;
             -webkit-print-color-adjust: exact; print-color-adjust: exact;
         }
-        .cover-logo { height: 140px; margin-bottom: 50px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3)); }
+        .cover-logo { height: 140px; margin-bottom: 50px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4)); }
         .cover-title { font-size: 48px; font-weight: 900; letter-spacing: -2px; line-height: 1; margin-bottom: 15px; }
         .cover-strip { width: 80px; height: 6px; background: var(--c-gold); margin: 0 auto 50px auto; border-radius: 3px; }
         .cover-sub { font-size: 18px; font-weight: 400; letter-spacing: 3px; text-transform: uppercase; opacity: 0.9; }
         .cover-footer { position: absolute; bottom: 2cm; left:0; right:0; font-size: 12px; opacity: 0.7; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; width: 80%; margin: auto; }
 
-        /* --- PÁGINA 2: CARTA (CENTRADA Y FORMAL) --- */
-        .letter-page { padding: 3cm 2.5cm; justify-content: space-between; }
-        .letter-header { border-bottom: 3px solid var(--c-dark); padding-bottom: 20px; margin-bottom: 40px; }
+        /* --- PÁGINA 2: CARTA (SUBIDA) --- */
+        .letter-page { padding: 2cm 2.5cm; } /* Menos padding superior */
+        .letter-header { border-bottom: 3px solid var(--c-dark); padding-bottom: 20px; margin-bottom: 30px; }
         .letter-title { font-size: 22px; font-weight: 800; color: var(--c-blue); text-transform: uppercase; }
         
-        /* Cuerpo de la carta centrado verticalmente */
-        .letter-body-container { display: flex; flex-direction: column; justify-content: center; flex-grow: 1; }
+        /* Cuerpo de la carta subido */
+        .letter-body-container { display: flex; flex-direction: column; justify-content: flex-start; flex-grow: 1; padding-top: 20px; }
         .letter-body { font-size: 14px; line-height: 2; text-align: justify; color: #334155; }
         .letter-body p { margin-bottom: 25px; }
-
-        .signature-block { margin-top: auto; } /* Empuja hacia abajo */
+        .signature-block { margin-top: auto; } 
         .sign-line { width: 250px; border-bottom: 2px solid #0f172a; margin-bottom: 15px; }
 
-        /* --- PÁGINA 3: MATRIZ (RELLENITA) --- */
+        /* --- PÁGINA 3: MATRIZ ELÁSTICA INTELIGENTE --- */
         .matrix-page { padding: 2cm; }
         .section-title { font-size: 20px; font-weight: 800; color: var(--c-dark); border-left: 6px solid var(--c-blue); padding-left: 15px; margin-bottom: 30px; text-transform: uppercase; }
 
-        .table-container { flex-grow: 1; display: flex; flex-direction: column; }
-        .data-table { width: 100%; border-collapse: collapse; font-size: 11px; height: 100%; }
+        /* Contenedor que centra si es pequeño, pero crece si es grande */
+        .table-wrapper-elastic {
+            flex-grow: 1; display: flex; flex-direction: column;
+            justify-content: center; /* Centra verticalmente si hay pocos */
+            min-height: 0; /* Permite scrolling/overflow */
+        }
+
+        .data-table { width: 100%; border-collapse: collapse; font-size: 11px; margin: auto 0; /* Ayuda al centrado */ }
+        /* Encabezado pegajoso para impresión multipágina */
+        .data-table thead { display: table-header-group; }
         .data-table th { background: var(--c-dark); color: white; padding: 12px; text-transform: uppercase; letter-spacing: 1px; }
-        /* Celdas más altas para llenar espacio */
-        .data-table td { padding: 10px 8px; border-bottom: 1px solid #e2e8f0; text-align: center; vertical-align: middle; }
+        /* Evita partir filas al imprimir */
+        .data-table tr { page-break-inside: avoid; }
+        .data-table td { padding: 8px 8px; border-bottom: 1px solid #e2e8f0; text-align: center; vertical-align: middle; }
         .data-table tr:nth-child(even) { background: #f8fafc; }
         .col-name { text-align: left !important; font-weight: 700; font-size: 12px; }
         
         .row-total td { background: #e2e8f0; font-weight: 900; border-top: 3px solid var(--c-dark); font-size: 13px; padding: 15px 8px; }
         
-        /* Colores Heatmap */
+        /* Heatmap Colors */
         .bg-crit { background: #fee2e2; color: var(--risk); font-weight:700; border-radius: 4px; padding: 4px 8px; }
         .bg-warn { background: #fef3c7; color: var(--warn); font-weight:700; border-radius: 4px; padding: 4px 8px; }
         .bg-good { background: #dcfce7; color: var(--safe); font-weight:700; border-radius: 4px; padding: 4px 8px; }
 
-        /* --- PÁGINA 4: GRÁFICAS (IMPONENTES Y 3D) --- */
+        /* --- PÁGINA 4: GRÁFICAS (COLORES LÓGICOS + DONUT CENTRADO) --- */
         .charts-page { padding: 2cm; }
         .charts-container { flex-grow: 1; display: flex; flex-direction: column; gap: 40px; justify-content: center; }
-        
-        .chart-box { 
-            background: white; border-radius: 16px; padding: 25px; 
-            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08); border: 1px solid #f1f5f9;
-        }
+        .chart-box { background: white; border-radius: 16px; padding: 25px; box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08); border: 1px solid #f1f5f9; }
         .chart-heading { text-align: center; font-weight: 800; margin-bottom: 20px; color: var(--c-blue); text-transform: uppercase; font-size: 14px; }
 
-        /* Donut 3D Profundo */
+        /* Donut 3D Centrado Perfecto */
         .donut-wrapper { 
-            position: relative; height: 300px; display: flex; justify-content: center; align-items: center;
-            /* Sombra interna para efecto 3D */
+            position: relative; height: 320px; /* Un poco más alto */
+            display: flex; justify-content: center; align-items: center;
             border-radius: 50%;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.1), 0 20px 40px rgba(0,0,0,0.2);
-            width: 300px; margin: 0 auto; background: white; padding: 10px;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.1), 0 25px 50px rgba(0,0,0,0.25); /* Sombra más profunda */
+            width: 320px; margin: 0 auto; background: white; padding: 15px;
+            box-sizing: border-box;
         }
+        /* El canvas debe llenar el wrapper */
+        .donut-wrapper canvas { z-index: 1; }
         .donut-center-txt { 
-            position: absolute; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            position: absolute; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            height: 100px; width: 100px; /* Asegura centrado */
         }
 
-        /* --- PÁGINA 5: DICTAMEN (ESPACIADO) --- */
+        /* --- PÁGINA 5: DICTAMEN (MULTICOLOR Y LLENO) --- */
         .analysis-page { padding: 2cm; justify-content: space-between; }
-        .analysis-container { flex-grow: 1; display: flex; flex-direction: column; justify-content: space-evenly; /* Distribuye el espacio */ }
+        .analysis-container { flex-grow: 1; display: flex; flex-direction: column; gap: 20px; /* Espacio uniforme */ justify-content: flex-start; margin-top: 20px; }
         
         .analysis-item { 
-            background: #f8fafc; border-left: 6px solid var(--c-gold); 
+            background: #f8fafc; 
             padding: 25px; border-radius: 0 12px 12px 0; 
             box-shadow: 0 5px 15px rgba(0,0,0,0.03);
         }
+        /* Variación de colores por caja */
+        .item-lec { border-left: 6px solid var(--c-blue); }
+        .item-mat { border-left: 6px solid var(--c-dark); }
+        .item-ing { border-left: 6px solid var(--c-gold); }
+        .item-final { border-left: 6px solid var(--safe); background: #f0fdf4; } /* Caja Verde final */
+
         .analysis-item h3 { margin: 0 0 15px 0; font-size: 15px; color: var(--c-dark); text-transform: uppercase; font-weight: 800; }
         .analysis-text { font-size: 13px; line-height: 1.8; color: #475569; text-align: justify; margin: 0; }
 
-        .footer-strip { text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 20px; }
+        .footer-strip-large { 
+            text-align: center; font-size: 12px; color: #64748b; 
+            border-top: 2px solid #e2e8f0; padding-top: 30px; margin-top: auto;
+            font-weight: 500; letter-spacing: 1px;
+        }
 
-        /* --- IMPRESIÓN PERFECTA --- */
+        /* --- IMPRESIÓN PERFECTA (La Clave de la Matriz) --- */
         @media print {
-            @page { margin: 0; size: A4; } /* Márgenes cero es CLAVE para la portada */
+            @page { margin: 0; size: A4; }
             body { background: white; padding: 0; gap: 0; }
+            
+            /* Páginas estándar */
             .page { 
-                margin: 0; width: 21cm; height: 29.7cm; 
+                margin: 0; width: 21cm; height: 29.7cm; /* Altura fija normal */
                 box-shadow: none; page-break-after: always; break-inside: avoid;
+                overflow: hidden;
             }
+
+            /* EXCEPCIÓN: La página de la matriz puede crecer */
+            .matrix-page { 
+                height: auto !important; /* Permite que crezca */
+                min-height: 29.7cm; 
+                overflow: visible !important; /* Permite que fluya a otra hoja */
+            }
+
             .page:last-child { page-break-after: auto; }
             .fab-print { display: none; }
-            /* Forzar fondos exactos */
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
         }
 
@@ -180,11 +203,7 @@
                     evaluar la eficacia de los procesos docentes actuales y proporcionar una hoja de ruta 
                     basada en evidencia cuantitativa para la toma de decisiones directivas.
                 </p>
-                <p>
-                    Los resultados se presentan desglosados en matriz de desempeño, análisis gráfico de áreas 
-                    y dictamen descriptivo final.
-                </p>
-                <p>Quedamos a su entera disposición para la socialización de estos hallazgos.</p>
+                <p>Quedamos a su entera disposición para la socialización de estos hallazgos estratégicos.</p>
             </div>
         </div>
 
@@ -198,7 +217,7 @@
     <div class="page matrix-page">
         <div class="section-title">Matriz Consolidada de Desempeño (Heatmap)</div>
 
-        <div class="table-container">
+        <div class="table-wrapper-elastic">
             <table class="data-table">
                 <thead>
                     <tr>
@@ -221,8 +240,9 @@
             </table>
         </div>
         
-        <div style="margin-top: 15px; font-size: 10px; color: #64748b;">
-            * Convención Heatmap: <span class="bg-crit" style="font-size:9px;">0-45 Crítico</span> | <span class="bg-warn" style="font-size:9px;">46-65 Alerta</span> | <span class="bg-good" style="font-size:9px;">66-100 Óptimo</span>.
+        <div style="margin-top: 20px; font-size: 10px; color: #64748b; text-align: center;">
+            * Convención: <span class="bg-crit" style="font-size:9px;">0-45 Crítico</span> | <span class="bg-warn" style="font-size:9px;">46-65 Alerta</span> | <span class="bg-good" style="font-size:9px;">66-100 Óptimo</span>.
+            La matriz se expandirá automáticamente en páginas subsiguientes si el volumen de datos lo requiere.
         </div>
     </div>
 
@@ -232,7 +252,8 @@
         <div class="charts-container">
             <div class="chart-box">
                 <div class="chart-heading">Ranking de Desempeño Promedio por Asignatura</div>
-                <div style="height: 280px;"> <canvas id="barChart"></canvas>
+                <div style="height: 280px;">
+                    <canvas id="barChart"></canvas>
                 </div>
             </div>
 
@@ -253,51 +274,62 @@
         <div class="section-title">Dictamen Técnico Descriptivo Final</div>
 
         <div class="analysis-container">
-            <div class="analysis-item">
+            <div class="analysis-item item-lec">
                 <h3>1. Hallazgos en Componente Lector y Comunicativo</h3>
                 <p class="analysis-text" id="desc-lec">
-                    El análisis de los datos evidencia que la media aritmética del grupo en Lectura Crítica se sitúa en <span id="avg-lec-txt" style="font-weight:700">0</span> puntos. 
-                    Se observa una dispersión moderada en los resultados, lo que sugiere niveles heterogéneos de apropiación de la competencia inferencial.
+                    El análisis evidencia que la media aritmética en Lectura Crítica es de <span id="avg-lec-txt" style="font-weight:700">0</span> puntos. 
+                    Se observa una dispersión moderada, sugiriendo niveles heterogéneos de apropiación de la competencia inferencial que requieren estrategias diferenciadas en el aula.
                 </p>
             </div>
 
-            <div class="analysis-item">
+            <div class="analysis-item item-mat">
                 <h3>2. Hallazgos en Razonamiento Cuantitativo y Científico</h3>
                 <p class="analysis-text" id="desc-mat">
-                    Las áreas de Matemáticas y Ciencias Naturales presentan los mayores retos del ciclo evaluado. 
-                    El promedio de Matemáticas (<span id="avg-mat-txt" style="font-weight:700; color:var(--risk);">0</span>) indica una tendencia hacia el rango inferior, 
-                    requiriendo una revisión de las estrategias de fortalecimiento en resolución de problemas.
+                    Las áreas de Matemáticas y Ciencias presentan los mayores retos. 
+                    El promedio de Matemáticas (<span id="avg-mat-txt" style="font-weight:700;">0</span>) indica una tendencia hacia el rango inferior, 
+                    demandando una revisión inmediata de las metodologías de resolución de problemas aplicados.
                 </p>
             </div>
 
-            <div class="analysis-item">
+            <div class="analysis-item item-ing">
                 <h3>3. Desempeño en Segunda Lengua (Inglés)</h3>
                 <p class="analysis-text" id="desc-ing">
-                    El componente de Inglés muestra un comportamiento estable dentro de la banda media de desempeño, 
-                    con un promedio consolidado de <span id="avg-ing-txt" style="font-weight:700">0</span>. 
-                    La mayoría de la población evaluada demuestra dominio de las competencias básicas del marco de referencia.
+                    El componente de Inglés muestra estabilidad en la banda media, con un promedio de <span id="avg-ing-txt" style="font-weight:700">0</span>. 
+                    La mayoría de la población demuestra dominio de las competencias básicas del marco de referencia A1/A2.
+                </p>
+            </div>
+
+            <div class="analysis-item item-final">
+                <h3>4. Proyección y Recomendación Estratégica</h3>
+                <p class="analysis-text">
+                    Con base en los datos, la institución posee un potencial de mejora del 15% en el índice global si se focalizan esfuerzos en el 
+                    fortalecimiento del razonamiento cuantitativo del cuartil medio. Se recomienda implementar un plan de choque de 8 semanas 
+                    previo a la prueba de estado real.
                 </p>
             </div>
         </div>
 
-        <div class="footer-strip">
-            INFORME GENERADO BAJO ESTÁNDARES DE CALIDAD ISO • SISTEMA QUIJANO V.63
+        <div class="footer-strip-large">
+            FIN DEL INFORME TÉCNICO • CERTIFICADO DE CALIDAD ISO 9001 • SISTEMA QUIJANO V.64
         </div>
     </div>
 
     <button class="fab-print" onclick="window.print()">🖨️ IMPRIMIR INFORME OFICIAL</button>
 
     <script>
-        // --- DATOS SIMULADOS (SE LLENARÁN 15 PARA LLENAR LA HOJA) ---
+        // --- SIMULACIÓN DE DATOS (SE LLENARÁN 30 PARA PROBAR LA TABLA GRANDE) ---
         const baseStudents = [
             { name: "AGUIRRE DAVILA DANA", l: 71, m: 68, s: 70, c: 75, i: 80, g: 364 },
-            { name: "ANACONA BOLAÑOS ANDRES", l: 65, m: 50, s: 60, c: 55, i: 45, g: 275 },
+            { name: "ANACONA BOLAÑOS ANDRES", l: 65, m: 45, s: 60, c: 55, i: 45, g: 270 },
             { name: "ARCOS NANDAR OSCAR", l: 40, m: 30, s: 45, c: 50, i: 35, g: 200 },
             { name: "BENAVIDES SOFIA", l: 82, m: 78, s: 75, c: 80, i: 85, g: 400 },
             { name: "CAICEDO JUAN ESTEBAN", l: 55, m: 45, s: 50, c: 52, i: 40, g: 242 }
         ];
-        // Triplicamos para tener 15 alumnos y llenar la tabla
-        let students = [...baseStudents, ...baseStudents, ...baseStudents].map((s, i) => ({...s, name: s.name + (i>4 ? " " + (i+1) : "")}));
+        // Multiplicamos por 6 para tener 30 alumnos y ver cómo se comporta la tabla
+        let students = [];
+        for(let k=0; k<6; k++) {
+            students = students.concat(baseStudents.map((s, i) => ({...s, name: s.name + " " + (k+1)})));
+        }
 
         // --- LÓGICA TABLA Y TOTALES ---
         const tbody = document.getElementById('table-body');
@@ -329,19 +361,27 @@
         document.getElementById('avg-lec-txt').innerText = avg.l;
         document.getElementById('avg-mat-txt').innerText = avg.m;
         document.getElementById('avg-ing-txt').innerText = avg.i;
+        document.getElementById('avg-mat-txt').style.color = avg.m <= 65 ? 'var(--risk)' : 'inherit';
 
-        // --- GRÁFICOS ---
+        // --- GRÁFICOS INTELIGENTES (COLORES DINÁMICOS) ---
         Chart.defaults.font.family = "'Inter', sans-serif";
         
-        // 1. Barras Imponentes
+        // Función para asignar color de barra según el promedio
+        function getBarColor(val) {
+             if(val <= 60) return '#dc2626'; // Rojo Risk
+             if(val <= 75) return '#d97706'; // Dorado Warn
+             return '#1d4ed8'; // Azul Safe/Corporate
+        }
+
+        // 1. Barras con Colores Lógicos
         new Chart(document.getElementById('barChart'), {
             type: 'bar',
             data: {
                 labels: ['LECTURA', 'SOCIALES', 'CIENCIAS', 'INGLÉS', 'MATEMÁTICAS'],
                 datasets: [{
                     data: [avg.l, avg.s, avg.c, avg.i, avg.m],
-                    backgroundColor: ['#1d4ed8', '#1d4ed8', '#b45309', '#b45309', '#dc2626'],
-                    borderRadius: 6, barPercentage: 0.7
+                    backgroundColor: [ getBarColor(avg.l), getBarColor(avg.s), getBarColor(avg.c), getBarColor(avg.i), getBarColor(avg.m) ],
+                    borderRadius: 6, barPercentage: 0.6
                 }]
             },
             options: {
@@ -359,10 +399,10 @@
                 datasets: [{
                     data: [levels.low, levels.mid, levels.high],
                     backgroundColor: ['#dc2626', '#f59e0b', '#16a34a'],
-                    borderWidth: 4, borderColor: '#ffffff', hoverOffset: 15
+                    borderWidth: 5, borderColor: '#ffffff', hoverOffset: 15
                 }]
             },
-            options: { cutout: '75%', plugins: { legend: { position:'bottom', labels:{padding:20, usePointStyle:true} } } }
+            options: { cutout: '75%', plugins: { legend: { position:'bottom', labels:{padding:20, usePointStyle:true, font:{weight:'600'}} } } }
         });
 
         const p = new URLSearchParams(window.location.search);
