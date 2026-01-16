@@ -3,411 +3,370 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informe de Gestión | Sistema Quijano</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Informe Gerencial de Calidad | Sistema Quijano</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 
     <style>
         :root {
-            --corp-dark: #0f172a;  /* Navy Premium */
-            --corp-blue: #1e40af;  /* Azul Institucional */
-            --corp-gold: #b45309;  /* Dorado Serio */
-            --corp-gray: #f1f5f9;
-            --risk: #ef4444; 
-            --warn: #f59e0b;
-            --safe: #10b981;
+            --c-dark: #0f172a;  /* Navy Premium */
+            --c-blue: #1d4ed8;  /* Azul Institucional Fuerte */
+            --c-gold: #b45309;  /* Dorado Serio */
+            --c-gray: #f8fafc;
+            --risk: #dc2626; --warn: #d97706; --safe: #16a34a;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #cbd5e1;
+            background: #e2e8f0; /* Fondo de pantalla contrastante */
             margin: 0;
             padding: 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 30px;
-            color: var(--corp-dark);
+            gap: 40px;
+            color: var(--c-dark);
         }
 
-        /* --- ARQUITECTURA DE PÁGINA (A4 IMPRESIÓN PERFECTA) --- */
+        /* --- ARQUITECTURA A4 PREMIUM --- */
         .page {
             background: white;
-            width: 21cm;
-            height: 29.7cm; /* Altura fija A4 */
-            position: relative;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            overflow: hidden;
+            width: 21cm; height: 29.7cm; /* A4 Fijo */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
+            overflow: hidden; /* Corte limpio */
         }
 
-        /* --- PÁGINA 1: PORTADA DE ALTO IMPACTO --- */
+        /* Utilidad para llenar espacio verticalmente */
+        .flex-grow { flex-grow: 1; } 
+
+        /* --- PÁGINA 1: PORTADA (INTOCABLE) --- */
         .cover-page {
-            background: linear-gradient(180deg, #0f172a 0%, #1e293b 80%, #1e40af 100%);
+            background: linear-gradient(180deg, #0f172a 0%, #1e3a8a 70%, #1d4ed8 100%) !important;
             color: white;
             padding: 3cm;
             justify-content: center;
+            text-align: center;
+            -webkit-print-color-adjust: exact; print-color-adjust: exact;
         }
-        .cover-content { position: relative; z-index: 2; text-align: center; }
-        .cover-logo { height: 120px; margin-bottom: 40px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.3)); }
-        .cover-title { font-size: 42px; font-weight: 800; letter-spacing: -1px; margin-bottom: 10px; line-height: 1.1; }
-        .cover-sub { font-size: 16px; font-weight: 300; opacity: 0.8; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 60px; }
-        .cover-strip { width: 100px; height: 4px; background: var(--corp-gold); margin: 0 auto 40px auto; }
-        
-        .cover-footer { 
-            position: absolute; bottom: 2cm; left: 0; right: 0; 
-            text-align: center; font-size: 11px; opacity: 0.6; 
-            border-top: 1px solid rgba(255,255,255,0.1); 
-            padding-top: 20px; width: 80%; margin: 0 auto;
-        }
+        .cover-logo { height: 140px; margin-bottom: 50px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3)); }
+        .cover-title { font-size: 48px; font-weight: 900; letter-spacing: -2px; line-height: 1; margin-bottom: 15px; }
+        .cover-strip { width: 80px; height: 6px; background: var(--c-gold); margin: 0 auto 50px auto; border-radius: 3px; }
+        .cover-sub { font-size: 18px; font-weight: 400; letter-spacing: 3px; text-transform: uppercase; opacity: 0.9; }
+        .cover-footer { position: absolute; bottom: 2cm; left:0; right:0; font-size: 12px; opacity: 0.7; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; width: 80%; margin: auto; }
 
-        /* --- PÁGINA 2: CARTA ADMINISTRATIVA (FORMAL) --- */
-        .letter-page { padding: 2.5cm; }
-        .letter-header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid var(--corp-dark); padding-bottom: 15px; margin-bottom: 40px; }
-        .letter-title { font-size: 18px; font-weight: 700; text-transform: uppercase; color: var(--corp-blue); }
-        .letter-meta { font-size: 11px; text-align: right; color: #64748b; }
+        /* --- PÁGINA 2: CARTA (CENTRADA Y FORMAL) --- */
+        .letter-page { padding: 3cm 2.5cm; justify-content: space-between; }
+        .letter-header { border-bottom: 3px solid var(--c-dark); padding-bottom: 20px; margin-bottom: 40px; }
+        .letter-title { font-size: 22px; font-weight: 800; color: var(--c-blue); text-transform: uppercase; }
         
-        .letter-body { font-size: 13px; line-height: 1.8; text-align: justify; color: #334155; }
-        .letter-body p { margin-bottom: 20px; }
-        
-        .signature-block { margin-top: 3cm; }
-        .sign-line { width: 250px; border-bottom: 1px solid #0f172a; margin-bottom: 10px; }
+        /* Cuerpo de la carta centrado verticalmente */
+        .letter-body-container { display: flex; flex-direction: column; justify-content: center; flex-grow: 1; }
+        .letter-body { font-size: 14px; line-height: 2; text-align: justify; color: #334155; }
+        .letter-body p { margin-bottom: 25px; }
 
-        /* --- PÁGINA 3: MATRIZ DE RESULTADOS (SÁBANA) --- */
-        .matrix-page { padding: 1.5cm; display: block; } /* Block para permitir tabla larga */
-        
-        .section-header { 
-            background: #f8fafc; border-left: 5px solid var(--corp-blue); 
-            padding: 15px; margin-bottom: 20px; border-radius: 0 8px 8px 0; 
-        }
-        .section-header h2 { margin: 0; font-size: 16px; text-transform: uppercase; color: var(--corp-dark); }
-        .section-header span { font-size: 11px; color: #64748b; }
+        .signature-block { margin-top: auto; } /* Empuja hacia abajo */
+        .sign-line { width: 250px; border-bottom: 2px solid #0f172a; margin-bottom: 15px; }
 
-        .data-table { width: 100%; border-collapse: collapse; font-size: 10px; }
-        .data-table th { 
-            background: var(--corp-dark); color: white; padding: 8px; 
-            text-align: center; font-weight: 600; text-transform: uppercase;
-        }
-        .data-table td { padding: 6px; border-bottom: 1px solid #e2e8f0; text-align: center; }
+        /* --- PÁGINA 3: MATRIZ (RELLENITA) --- */
+        .matrix-page { padding: 2cm; }
+        .section-title { font-size: 20px; font-weight: 800; color: var(--c-dark); border-left: 6px solid var(--c-blue); padding-left: 15px; margin-bottom: 30px; text-transform: uppercase; }
+
+        .table-container { flex-grow: 1; display: flex; flex-direction: column; }
+        .data-table { width: 100%; border-collapse: collapse; font-size: 11px; height: 100%; }
+        .data-table th { background: var(--c-dark); color: white; padding: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        /* Celdas más altas para llenar espacio */
+        .data-table td { padding: 10px 8px; border-bottom: 1px solid #e2e8f0; text-align: center; vertical-align: middle; }
         .data-table tr:nth-child(even) { background: #f8fafc; }
-        .col-name { text-align: left !important; font-weight: 600; color: var(--corp-dark); }
+        .col-name { text-align: left !important; font-weight: 700; font-size: 12px; }
         
-        /* FILA DE TOTALES */
-        .row-total { background: #e2e8f0 !important; font-weight: 800; border-top: 2px solid var(--corp-dark); }
+        .row-total td { background: #e2e8f0; font-weight: 900; border-top: 3px solid var(--c-dark); font-size: 13px; padding: 15px 8px; }
         
         /* Colores Heatmap */
-        .bg-crit { background: #fecaca; color: #991b1b; border-radius: 4px; padding: 2px 5px; }
-        .bg-warn { background: #fde68a; color: #92400e; border-radius: 4px; padding: 2px 5px; }
-        .bg-good { background: #bbf7d0; color: #166534; border-radius: 4px; padding: 2px 5px; }
+        .bg-crit { background: #fee2e2; color: var(--risk); font-weight:700; border-radius: 4px; padding: 4px 8px; }
+        .bg-warn { background: #fef3c7; color: var(--warn); font-weight:700; border-radius: 4px; padding: 4px 8px; }
+        .bg-good { background: #dcfce7; color: var(--safe); font-weight:700; border-radius: 4px; padding: 4px 8px; }
 
-        /* --- PÁGINA 4: ANÁLISIS POR ÁREA (PERFORMANCE DOCENTE) --- */
-        .charts-page { padding: 1.5cm; }
-        .chart-grid { display: grid; grid-template-columns: 1fr; gap: 30px; height: 100%; }
+        /* --- PÁGINA 4: GRÁFICAS (IMPONENTES Y 3D) --- */
+        .charts-page { padding: 2cm; }
+        .charts-container { flex-grow: 1; display: flex; flex-direction: column; gap: 40px; justify-content: center; }
         
-        .area-card { 
-            border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; 
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        .chart-box { 
+            background: white; border-radius: 16px; padding: 25px; 
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08); border: 1px solid #f1f5f9;
         }
+        .chart-heading { text-align: center; font-weight: 800; margin-bottom: 20px; color: var(--c-blue); text-transform: uppercase; font-size: 14px; }
+
+        /* Donut 3D Profundo */
+        .donut-wrapper { 
+            position: relative; height: 300px; display: flex; justify-content: center; align-items: center;
+            /* Sombra interna para efecto 3D */
+            border-radius: 50%;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.1), 0 20px 40px rgba(0,0,0,0.2);
+            width: 300px; margin: 0 auto; background: white; padding: 10px;
+        }
+        .donut-center-txt { 
+            position: absolute; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        }
+
+        /* --- PÁGINA 5: DICTAMEN (ESPACIADO) --- */
+        .analysis-page { padding: 2cm; justify-content: space-between; }
+        .analysis-container { flex-grow: 1; display: flex; flex-direction: column; justify-content: space-evenly; /* Distribuye el espacio */ }
         
-        /* Torta 3D (Simulada) */
-        .donut-container { position: relative; height: 250px; width: 100%; display: flex; justify-content: center; }
-        .donut-center { 
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            text-align: center; font-size: 24px; font-weight: 800; color: var(--corp-dark);
+        .analysis-item { 
+            background: #f8fafc; border-left: 6px solid var(--c-gold); 
+            padding: 25px; border-radius: 0 12px 12px 0; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
         }
+        .analysis-item h3 { margin: 0 0 15px 0; font-size: 15px; color: var(--c-dark); text-transform: uppercase; font-weight: 800; }
+        .analysis-text { font-size: 13px; line-height: 1.8; color: #475569; text-align: justify; margin: 0; }
 
-        /* --- PÁGINA 5: DICTAMEN TÉCNICO (DESCRIPTIVO) --- */
-        .analysis-page { padding: 2cm; }
-        .analysis-box {
-            background: white; border-left: 4px solid var(--corp-gray);
-            padding: 0 0 0 20px; margin-bottom: 30px;
-        }
-        .analysis-box h3 { margin: 0 0 10px 0; font-size: 14px; color: var(--corp-blue); text-transform: uppercase; }
-        .analysis-text { font-size: 12px; color: #475569; line-height: 1.6; text-align: justify; }
+        .footer-strip { text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 20px; }
 
-        /* --- PRINT SETTINGS --- */
+        /* --- IMPRESIÓN PERFECTA --- */
         @media print {
+            @page { margin: 0; size: A4; } /* Márgenes cero es CLAVE para la portada */
             body { background: white; padding: 0; gap: 0; }
-            .page { margin: 0; width: 100%; height: 100%; box-shadow: none; page-break-after: always; }
+            .page { 
+                margin: 0; width: 21cm; height: 29.7cm; 
+                box-shadow: none; page-break-after: always; break-inside: avoid;
+            }
             .page:last-child { page-break-after: auto; }
             .fab-print { display: none; }
-            .bg-crit, .bg-warn, .bg-good, .cover-page { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            /* Forzar fondos exactos */
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
         }
 
-        /* Botón */
-        .fab-print {
-            position: fixed; bottom: 30px; right: 30px; background: var(--corp-blue); color: white;
-            padding: 15px 30px; border-radius: 50px; font-weight: 700; cursor: pointer; border: none;
-            box-shadow: 0 10px 20px rgba(30, 64, 175, 0.4); z-index: 999;
-        }
+        .fab-print { position: fixed; bottom: 30px; right: 30px; background: var(--c-blue); color: white; padding: 15px 40px; border-radius: 50px; font-weight: 800; cursor: pointer; border: none; box-shadow: 0 10px 25px rgba(29, 78, 216, 0.5); z-index: 999; font-size: 14px; }
     </style>
 </head>
 <body>
 
     <div class="page cover-page">
-        <div class="cover-content">
+        <div>
             <img src="https://raw.githubusercontent.com/profeangel96-bit/PLANTILLA/main/Gemini_Generated_Image_24c84124c84124c8.png" class="cover-logo">
-            <div class="cover-title">INFORME DE GESTIÓN<br>Y RESULTADOS</div>
+            <div class="cover-title">INFORME GERENCIAL<br>DE CALIDAD EDUCATIVA</div>
             <div class="cover-strip"></div>
-            <div class="cover-sub">ANÁLISIS DE CALIDAD EDUCATIVA | SIMULACRO S-11</div>
+            <div class="cover-sub">EVALUACIÓN ESTRATÉGICA | SIMULACRO S-11</div>
         </div>
         <div class="cover-footer">
-            DOCUMENTO TÉCNICO GENERADO POR SISTEMA DE INTELIGENCIA QUIJANO<br>
-            CONFIDENCIAL • USO EXCLUSIVO ADMINISTRATIVO
+            DOCUMENTO OFICIAL GENERADO POR SISTEMA DE INTELIGENCIA QUIJANO<br>
+            CONFIDENCIAL • PARA USO EXCLUSIVO DE ALCALDÍA Y RECTORÍA
         </div>
     </div>
 
     <div class="page letter-page">
         <div class="letter-header">
-            <div class="letter-title">Radicado Técnico N° <span id="radicado">2026-001</span></div>
-            <div class="letter-meta">
-                <strong>FECHA:</strong> 16 de Enero de 2026<br>
-                <strong>ASUNTO:</strong> Entrega Oficial de Resultados
+            <div class="letter-title">Radicado N° <span id="rad-id">AQ-2026-001</span></div>
+            <div style="text-align: right; font-size: 12px; color: #64748b;">
+                <strong>FECHA DE EMISIÓN:</strong><br>16 de Enero de 2026
             </div>
         </div>
-        <div class="letter-body">
-            <p><strong>A la atención de la Rectoría y Coordinación Académica:</strong></p>
-            <p>
-                En cumplimiento con el contrato de consultoría externa para el fortalecimiento de la calidad educativa, 
-                la <strong>Academia Quijano</strong> hace entrega formal del consolidado de resultados correspondiente al Simulacro S-11.
-            </p>
-            <p>
-                Este documento técnico tiene como objetivo proporcionar a la administración los indicadores cuantitativos 
-                necesarios para la evaluación del desempeño docente y estudiantil. La información contenida en las siguientes 
-                páginas desglosa el rendimiento por áreas del núcleo común, permitiendo identificar fortalezas institucionales 
-                y focos de atención prioritaria.
-            </p>
-            <p>
-                Se anexa la matriz detallada de puntajes, el análisis comparativo por asignatura y el dictamen descriptivo 
-                de la distribución poblacional del grado 11.
-            </p>
-            <p>Atentamente,</p>
+        
+        <div class="letter-body-container">
+            <div class="letter-body">
+                <p><strong>HONORABLE ALCALDÍA MUNICIPAL Y SECRETARÍA DE EDUCACIÓN:</strong></p>
+                <p>
+                    En calidad de consultores externos especializados en medición y evaluación educativa, 
+                    la <strong>Academia Quijano</strong> hace entrega formal del presente dictamen técnico 
+                    correspondiente a la prueba diagnóstica (Simulacro S-11) aplicada a la población de grado undécimo.
+                </p>
+                <p>
+                    El siguiente informe no constituye un simple listado de calificaciones. Representa un análisis 
+                    de inteligencia de datos diseñado para identificar brechas de aprendizaje estructurales, 
+                    evaluar la eficacia de los procesos docentes actuales y proporcionar una hoja de ruta 
+                    basada en evidencia cuantitativa para la toma de decisiones directivas.
+                </p>
+                <p>
+                    Los resultados se presentan desglosados en matriz de desempeño, análisis gráfico de áreas 
+                    y dictamen descriptivo final.
+                </p>
+                <p>Quedamos a su entera disposición para la socialización de estos hallazgos.</p>
+            </div>
         </div>
+
         <div class="signature-block">
             <div class="sign-line"></div>
             <strong>JUAN ÁNGEL RODRÍGUEZ BASANTE</strong><br>
-            <span style="font-size: 11px; color: #64748b;">Director de Operaciones<br>Academia Quijano</span>
+            <span style="font-size: 12px; color: #64748b; font-weight: 500;">Director General de Operaciones<br>Sistema de Inteligencia Quijano</span>
         </div>
     </div>
 
     <div class="page matrix-page">
-        <div class="section-header">
-            <h2>Matriz Consolidada de Desempeño</h2>
-            <span>DESGLOSE INDIVIDUAL Y PROMEDIOS DE ÁREA</span>
-        </div>
+        <div class="section-title">Matriz Consolidada de Desempeño (Heatmap)</div>
 
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th style="width: 30px;">#</th>
-                    <th style="width: 250px;">Apellidos y Nombres</th>
-                    <th>LEC</th>
-                    <th>MAT</th>
-                    <th>SOC</th>
-                    <th>CIE</th>
-                    <th>ING</th>
-                    <th>GLOBAL</th>
-                </tr>
-            </thead>
-            <tbody id="table-body">
-                </tbody>
-            <tfoot>
-                <tr class="row-total" id="table-footer">
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 40px;">#</th>
+                        <th>Estudiante Evaluado</th>
+                        <th style="width: 70px;">LEC</th>
+                        <th style="width: 70px;">MAT</th>
+                        <th style="width: 70px;">SOC</th>
+                        <th style="width: 70px;">CIE</th>
+                        <th style="width: 70px;">ING</th>
+                        <th style="width: 80px;">GLOBAL</th>
                     </tr>
-            </tfoot>
-        </table>
+                </thead>
+                <tbody id="table-body">
+                    </tbody>
+                <tfoot>
+                    <tr class="row-total" id="table-footer">
+                        </tr>
+                </tfoot>
+            </table>
+        </div>
         
-        <div style="margin-top: 20px; font-size: 10px; color: #64748b;">
-            * Nota: Los colores indican el rango de desempeño (Rojo: 0-45, Amarillo: 46-65, Verde: 66-100).
-            El promedio de área permite evaluar la eficacia de la metodología docente en el periodo actual.
+        <div style="margin-top: 15px; font-size: 10px; color: #64748b;">
+            * Convención Heatmap: <span class="bg-crit" style="font-size:9px;">0-45 Crítico</span> | <span class="bg-warn" style="font-size:9px;">46-65 Alerta</span> | <span class="bg-good" style="font-size:9px;">66-100 Óptimo</span>.
         </div>
     </div>
 
     <div class="page charts-page">
-        <div class="section-header">
-            <h2>Indicadores de Gestión por Asignatura</h2>
-            <span>EVALUACIÓN DE EFICACIA DOCENTE Y DISTRIBUCIÓN</span>
-        </div>
+        <div class="section-title">Indicadores Visuales de Gestión Académica</div>
 
-        <div class="chart-grid">
-            <div class="area-card">
-                <h4 style="margin:0 0 15px 0; font-size:12px; text-transform:uppercase; color:var(--corp-dark);">Promedio Acumulado por Área</h4>
-                <div style="height: 200px;">
-                    <canvas id="barChart"></canvas>
+        <div class="charts-container">
+            <div class="chart-box">
+                <div class="chart-heading">Ranking de Desempeño Promedio por Asignatura</div>
+                <div style="height: 280px;"> <canvas id="barChart"></canvas>
                 </div>
             </div>
 
-            <div class="area-card" style="display: flex; flex-direction: column; align-items: center;">
-                <h4 style="margin:0 0 15px 0; font-size:12px; text-transform:uppercase; color:var(--corp-dark);">Distribución Poblacional (Global)</h4>
-                <div class="donut-container">
+            <div class="chart-box" style="display: flex; flex-direction: column; align-items: center;">
+                <div class="chart-heading">Distribución Poblacional por Niveles de Competencia</div>
+                <div class="donut-wrapper">
                     <canvas id="donutChart"></canvas>
-                    <div class="donut-center" id="total-students">0</div>
+                    <div class="donut-center-txt">
+                        <div style="font-size: 36px; font-weight: 900; color: var(--c-dark);" id="total-students">0</div>
+                        <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">Estudiantes</div>
+                    </div>
                 </div>
-                <div style="font-size: 10px; color: #64748b; margin-top: 10px;">Total Estudiantes Evaluados</div>
             </div>
         </div>
     </div>
 
     <div class="page analysis-page">
-        <div class="section-header">
-            <h2>Dictamen Técnico Descriptivo</h2>
-            <span>ANÁLISIS DE DATOS OBSERVADOS</span>
+        <div class="section-title">Dictamen Técnico Descriptivo Final</div>
+
+        <div class="analysis-container">
+            <div class="analysis-item">
+                <h3>1. Hallazgos en Componente Lector y Comunicativo</h3>
+                <p class="analysis-text" id="desc-lec">
+                    El análisis de los datos evidencia que la media aritmética del grupo en Lectura Crítica se sitúa en <span id="avg-lec-txt" style="font-weight:700">0</span> puntos. 
+                    Se observa una dispersión moderada en los resultados, lo que sugiere niveles heterogéneos de apropiación de la competencia inferencial.
+                </p>
+            </div>
+
+            <div class="analysis-item">
+                <h3>2. Hallazgos en Razonamiento Cuantitativo y Científico</h3>
+                <p class="analysis-text" id="desc-mat">
+                    Las áreas de Matemáticas y Ciencias Naturales presentan los mayores retos del ciclo evaluado. 
+                    El promedio de Matemáticas (<span id="avg-mat-txt" style="font-weight:700; color:var(--risk);">0</span>) indica una tendencia hacia el rango inferior, 
+                    requiriendo una revisión de las estrategias de fortalecimiento en resolución de problemas.
+                </p>
+            </div>
+
+            <div class="analysis-item">
+                <h3>3. Desempeño en Segunda Lengua (Inglés)</h3>
+                <p class="analysis-text" id="desc-ing">
+                    El componente de Inglés muestra un comportamiento estable dentro de la banda media de desempeño, 
+                    con un promedio consolidado de <span id="avg-ing-txt" style="font-weight:700">0</span>. 
+                    La mayoría de la población evaluada demuestra dominio de las competencias básicas del marco de referencia.
+                </p>
+            </div>
         </div>
 
-        <div class="analysis-box">
-            <h3>1. Comportamiento en Lectura Crítica</h3>
-            <p class="analysis-text" id="desc-lec">
-                Se evidencia que el <span id="perc-lec">0%</span> de la población estudiantil se encuentra en el rango superior. 
-                La media aritmética del grupo se sitúa en <span id="avg-lec-txt">0</span> puntos. 
-                No se observan desviaciones atípicas significativas en este componente.
-            </p>
-        </div>
-
-        <div class="analysis-box">
-            <h3>2. Comportamiento en Matemáticas y Ciencias</h3>
-            <p class="analysis-text" id="desc-mat">
-                Los datos recolectados muestran una concentración de resultados en el cuartil medio-bajo. 
-                El puntaje promedio de Matemáticas (<span id="avg-mat-txt">0</span>) es inferior al promedio institucional general. 
-                Ciencias Naturales presenta una dispersión mayor entre los puntajes más altos y los más bajos.
-            </p>
-        </div>
-
-        <div class="analysis-box">
-            <h3>3. Competencia en Segunda Lengua (Inglés)</h3>
-            <p class="analysis-text" id="desc-ing">
-                El área de Inglés registra el comportamiento más estable del simulacro. 
-                La mayoría de estudiantes aprobó el componente básico, situando el promedio en <span id="avg-ing-txt">0</span>.
-            </p>
-        </div>
-
-        <div style="margin-top: auto; border-top: 1px solid #0f172a; padding-top: 10px; font-size: 10px; text-align: center; opacity: 0.7;">
-            FIN DEL INFORME TÉCNICO • SISTEMA DE GESTIÓN DE CALIDAD QUIJANO
+        <div class="footer-strip">
+            INFORME GENERADO BAJO ESTÁNDARES DE CALIDAD ISO • SISTEMA QUIJANO V.63
         </div>
     </div>
 
-    <button class="fab-print" onclick="window.print()">🖨️ IMPRIMIR OFICIAL</button>
+    <button class="fab-print" onclick="window.print()">🖨️ IMPRIMIR INFORME OFICIAL</button>
 
     <script>
-        // --- 1. DATOS SIMULADOS (ESTO LO LLENA GOOGLE SHEETS) ---
-        // En producción, Sheets reemplaza este array con datos reales
-        const students = [
+        // --- DATOS SIMULADOS (SE LLENARÁN 15 PARA LLENAR LA HOJA) ---
+        const baseStudents = [
             { name: "AGUIRRE DAVILA DANA", l: 71, m: 68, s: 70, c: 75, i: 80, g: 364 },
             { name: "ANACONA BOLAÑOS ANDRES", l: 65, m: 50, s: 60, c: 55, i: 45, g: 275 },
             { name: "ARCOS NANDAR OSCAR", l: 40, m: 30, s: 45, c: 50, i: 35, g: 200 },
-            { name: "BENAVIDES SOFIA", l: 80, m: 78, s: 75, c: 82, i: 85, g: 400 },
-            { name: "CAICEDO JUAN ESTEBAN", l: 55, m: 45, s: 50, c: 52, i: 40, g: 242 },
-            { name: "CIFUENTES GABRIELA", l: 60, m: 55, s: 58, c: 60, i: 50, g: 283 },
-            { name: "DIAZ JOHAN CAMILO", l: 35, m: 40, s: 38, c: 42, i: 30, g: 185 },
-            { name: "GOMEZ PEDRO", l: 72, m: 70, s: 68, c: 70, i: 65, g: 345 },
-            { name: "LOPEZ MARIA", l: 45, m: 48, s: 50, c: 45, i: 40, g: 228 },
-            { name: "MARTINEZ LUIS", l: 68, m: 65, s: 62, c: 64, i: 60, g: 319 },
-            // ... (Más datos se cargarían aquí)
+            { name: "BENAVIDES SOFIA", l: 82, m: 78, s: 75, c: 80, i: 85, g: 400 },
+            { name: "CAICEDO JUAN ESTEBAN", l: 55, m: 45, s: 50, c: 52, i: 40, g: 242 }
         ];
+        // Triplicamos para tener 15 alumnos y llenar la tabla
+        let students = [...baseStudents, ...baseStudents, ...baseStudents].map((s, i) => ({...s, name: s.name + (i>4 ? " " + (i+1) : "")}));
 
-        // --- 2. LÓGICA DE TABLA Y TOTALES ---
+        // --- LÓGICA TABLA Y TOTALES ---
         const tbody = document.getElementById('table-body');
         let sum = { l:0, m:0, s:0, c:0, i:0, g:0 };
-        
-        function getColor(v) {
-            if(v <= 45) return 'bg-crit';
-            if(v <= 65) return 'bg-warn';
-            return 'bg-good';
-        }
+        function getColor(v) { if(v<=45) return 'bg-crit'; if(v<=65) return 'bg-warn'; return 'bg-good'; }
 
         students.forEach((s, i) => {
-            sum.l += s.l; sum.m += s.m; sum.s += s.s; sum.c += s.c; sum.i += s.i; sum.g += s.g;
-            
-            let tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${i+1}</td>
-                <td class="col-name">${s.name}</td>
-                <td><span class="${getColor(s.l)}">${s.l}</span></td>
-                <td><span class="${getColor(s.m)}">${s.m}</span></td>
-                <td><span class="${getColor(s.s)}">${s.s}</span></td>
-                <td><span class="${getColor(s.c)}">${s.c}</span></td>
-                <td><span class="${getColor(s.i)}">${s.i}</span></td>
-                <td><strong>${s.g}</strong></td>
-            `;
-            tbody.appendChild(tr);
+            sum.l+=s.l; sum.m+=s.m; sum.s+=s.s; sum.c+=s.c; sum.i+=s.i; sum.g+=s.g;
+            tbody.innerHTML += `<tr>
+                <td>${i+1}</td><td class="col-name">${s.name}</td>
+                <td><span class="${getColor(s.l)}">${s.l}</span></td><td><span class="${getColor(s.m)}">${s.m}</span></td>
+                <td><span class="${getColor(s.s)}">${s.s}</span></td><td><span class="${getColor(s.c)}">${s.c}</span></td>
+                <td><span class="${getColor(s.i)}">${s.i}</span></td><td><strong>${s.g}</strong></td>
+            </tr>`;
         });
 
-        // Calcular Promedios
         const count = students.length;
-        const avg = {
-            l: Math.round(sum.l/count), m: Math.round(sum.m/count),
-            s: Math.round(sum.s/count), c: Math.round(sum.c/count),
-            i: Math.round(sum.i/count), g: Math.round(sum.g/count)
-        };
+        const avg = { l:Math.round(sum.l/count), m:Math.round(sum.m/count), s:Math.round(sum.s/count), c:Math.round(sum.c/count), i:Math.round(sum.i/count), g:Math.round(sum.g/count) };
 
-        // Pintar Fila de Totales
         document.getElementById('table-footer').innerHTML = `
-            <td colspan="2" style="text-align:right; padding-right:10px;">PROMEDIO POR ÁREA:</td>
-            <td>${avg.l}</td> <td>${avg.m}</td> <td>${avg.s}</td> <td>${avg.c}</td> <td>${avg.i}</td> <td>${avg.g}</td>
+            <td colspan="2" style="text-align:right; letter-spacing:1px;">PROMEDIO INSTITUCIONAL:</td>
+            <td class="${getColor(avg.l)}">${avg.l}</td><td class="${getColor(avg.m)}">${avg.m}</td>
+            <td class="${getColor(avg.s)}">${avg.s}</td><td class="${getColor(avg.c)}">${avg.c}</td>
+            <td class="${getColor(avg.i)}">${avg.i}</td><td style="font-size:14px;">${avg.g}</td>
         `;
 
-        // Actualizar Textos Descriptivos
+        // Actualizar Textos
         document.getElementById('total-students').innerText = count;
         document.getElementById('avg-lec-txt').innerText = avg.l;
         document.getElementById('avg-mat-txt').innerText = avg.m;
         document.getElementById('avg-ing-txt').innerText = avg.i;
 
-        // --- 3. GRÁFICOS (Chart.js) ---
+        // --- GRÁFICOS ---
+        Chart.defaults.font.family = "'Inter', sans-serif";
         
-        // A. Barras Horizontales (Ranking Áreas)
+        // 1. Barras Imponentes
         new Chart(document.getElementById('barChart'), {
             type: 'bar',
             data: {
-                labels: ['LECTURA', 'SOCIALES', 'CIENCIAS', 'MATEMÁTICAS', 'INGLÉS'],
+                labels: ['LECTURA', 'SOCIALES', 'CIENCIAS', 'INGLÉS', 'MATEMÁTICAS'],
                 datasets: [{
-                    label: 'Puntaje Promedio',
-                    data: [avg.l, avg.s, avg.c, avg.m, avg.i],
-                    backgroundColor: [
-                        '#1e40af', '#1e40af', '#1e40af', '#b45309', '#b45309' // Destacar las bajas en otro color si quieres
-                    ],
-                    borderRadius: 4,
-                    barThickness: 20
+                    data: [avg.l, avg.s, avg.c, avg.i, avg.m],
+                    backgroundColor: ['#1d4ed8', '#1d4ed8', '#b45309', '#b45309', '#dc2626'],
+                    borderRadius: 6, barPercentage: 0.7
                 }]
             },
             options: {
-                indexAxis: 'y', // Hace las barras horizontales
-                plugins: { legend: { display: false } },
-                scales: { x: { beginAtZero: true, max: 100, grid: { display: false } } }
+                indexAxis: 'y', plugins: { legend: false },
+                scales: { x: { beginAtZero:true, max:100, grid:{color:'#e2e8f0'} }, y: { grid:{display:false}, ticks:{font:{weight:'700'}} } }
             }
         });
 
-        // B. Torta "Donut" 3D (Distribución)
-        // Simulamos 3 niveles: Bajo (<250), Medio (250-320), Alto (>320)
-        let levels = { low:0, mid:0, high:0 };
-        students.forEach(s => {
-            if(s.g < 250) levels.low++;
-            else if(s.g < 320) levels.mid++;
-            else levels.high++;
-        });
-
+        // 2. Donut 3D Profundo
+        let levels = { low:0, mid:0, high:0 }; students.forEach(s=>{ if(s.g<250) levels.low++; else if(s.g<320) levels.mid++; else levels.high++; });
         new Chart(document.getElementById('donutChart'), {
             type: 'doughnut',
             data: {
-                labels: ['Nivel Inicial', 'Nivel Medio', 'Nivel Avanzado'],
+                labels: ['Bajo', 'Medio', 'Alto'],
                 datasets: [{
                     data: [levels.low, levels.mid, levels.high],
-                    backgroundColor: ['#ef4444', '#f59e0b', '#10b981'],
-                    borderWidth: 0,
-                    hoverOffset: 10
+                    backgroundColor: ['#dc2626', '#f59e0b', '#16a34a'],
+                    borderWidth: 4, borderColor: '#ffffff', hoverOffset: 15
                 }]
             },
-            options: {
-                cutout: '70%', // Hace el agujero grande para el número
-                plugins: { legend: { position: 'bottom', labels: { font: { size: 10 } } } }
-            }
+            options: { cutout: '75%', plugins: { legend: { position:'bottom', labels:{padding:20, usePointStyle:true} } } }
         });
 
-        // Capturar parámetros URL si existen (para conectar con Sheets)
         const p = new URLSearchParams(window.location.search);
-        if(p.get('rad')) document.getElementById('radicado').innerText = p.get('rad');
-
+        if(p.get('rad')) document.getElementById('rad-id').innerText = p.get('rad');
     </script>
 </body>
 </html>
