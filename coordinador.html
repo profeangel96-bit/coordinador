@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informe Gerencial V.66 | Sistema Quijano</title>
+    <title>Informe Gerencial V.67 | Sistema Quijano</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
@@ -15,6 +15,7 @@
             --c-gold: #b45309;  /* Dorado Ejecutivo */
             --c-gray: #f1f5f9;
             --risk: #dc2626; --warn: #d97706; --safe: #16a34a;
+            --shadow-pro: 0 10px 30px -5px rgba(0, 0, 0, 0.1); /* Sombra Profesional */
         }
 
         body {
@@ -26,11 +27,10 @@
         }
 
         /* --- ARQUITECTURA TAMAÑO CARTA (LETTER) --- */
-        /* 21.59cm x 27.94cm */
         .page {
             background: white;
             width: 21.59cm; height: 27.94cm; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-pro);
             box-sizing: border-box;
             display: flex; flex-direction: column;
             overflow: hidden; position: relative;
@@ -58,90 +58,86 @@
         .signature-block { margin-top: auto; }
         .sign-line { width: 250px; border-bottom: 2px solid #0f172a; margin-bottom: 15px; }
 
-        /* --- PÁGINA 3+: MATRIZ (LÓGICA DE SALTO DE PÁGINA) --- */
+        /* --- PÁGINA 3+: MATRIZ (CORTE LIMPIO MEJORADO) --- */
         .matrix-page { 
             padding: 2cm; 
-            height: auto !important; /* Permite crecer */
+            padding-bottom: 50px; /* Margen de seguridad inferior */
+            height: auto !important; 
             min-height: 27.94cm; 
             display: block; 
         } 
         .section-title { font-size: 18px; font-weight: 800; color: var(--c-dark); border-left: 6px solid var(--c-blue); padding-left: 15px; margin-bottom: 30px; text-transform: uppercase; }
 
         .data-table { width: 100%; border-collapse: collapse; font-size: 10px; margin-bottom: 20px; }
-        
-        /* ESTO HACE LA MAGIA AL IMPRIMIR */
-        .data-table thead { display: table-header-group; } /* Repite el encabezado en cada hoja nueva */
-        .data-table tr { page-break-inside: avoid; } /* No corta nombres a la mitad */
+        .data-table thead { display: table-header-group; } 
+        /* FUERZA BRUTA PARA EVITAR CORTES */
+        .data-table tr { page-break-inside: avoid !important; break-inside: avoid !important; } 
         
         .data-table th { background: var(--c-dark); color: white; padding: 10px 5px; text-transform: uppercase; letter-spacing: 0.5px; font-size: 9px; }
         .data-table td { padding: 8px 5px; border-bottom: 1px solid #e2e8f0; text-align: center; color: #334155; }
         .data-table tr:nth-child(even) { background: #f8fafc; }
         
-        /* Colores Heatmap */
         .bg-crit { background: #fee2e2; color: var(--risk); font-weight:700; border-radius: 4px; padding: 3px 0; display:block; width: 80%; margin: 0 auto; }
         .bg-warn { background: #ffedd5; color: #c2410c; font-weight:700; border-radius: 4px; padding: 3px 0; display:block; width: 80%; margin: 0 auto; }
         .bg-good { background: #dcfce7; color: var(--safe); font-weight:700; border-radius: 4px; padding: 3px 0; display:block; width: 80%; margin: 0 auto; }
 
-        /* --- PÁGINA 4: GRÁFICAS (SOLO 2, CON DONUT ULTRA 3D) --- */
+        /* --- PÁGINA 4: GRÁFICAS (PRO CON BARRA LATERAL) --- */
         .charts-page { padding: 2cm; display: flex; flex-direction: column; justify-content: center; gap: 50px; }
         
         .chart-box { 
-            background: white; border-radius: 16px; padding: 30px; 
-            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08); border: 1px solid #f1f5f9;
+            background: white; border-radius: 12px; padding: 30px; 
+            box-shadow: var(--shadow-pro); 
+            border: 1px solid #f1f5f9;
+            border-left: 6px solid var(--c-blue); /* BARRA LATERAL PROFESIONAL */
+            background: linear-gradient(to right, #f8fafc, #ffffff 10%); /* Sutil degradado interno */
         }
         .chart-heading { text-align: center; font-weight: 800; margin-bottom: 25px; color: var(--c-blue); text-transform: uppercase; font-size: 13px; letter-spacing: 1px; }
 
         /* DONUT ULTRA 3D */
         .donut-wrapper { 
-            position: relative; height: 350px; /* Grande */
+            position: relative; height: 350px; 
             display: flex; justify-content: center; align-items: center;
             border-radius: 50%;
-            /* SOMBRA TRIPLE PARA EFECTO BOTÓN FLOTANTE */
-            box-shadow: 
-                inset 5px 5px 15px rgba(0,0,0,0.05), /* Sombra interna suave */
-                inset -5px -5px 15px rgba(255,255,255,0.8), /* Brillo interno */
-                10px 10px 30px rgba(0,0,0,0.15), /* Sombra larga */
-                -5px -5px 20px rgba(255,255,255,1); /* Luz ambiental */
+            box-shadow: inset 5px 5px 15px rgba(0,0,0,0.05), inset -5px -5px 15px rgba(255,255,255,0.8), 10px 10px 30px rgba(0,0,0,0.15);
             width: 350px; margin: 0 auto; background: white; padding: 20px;
             box-sizing: border-box;
         }
-        .donut-center-txt { 
-            position: absolute; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2;
-        }
+        .donut-center-txt { position: absolute; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; }
 
-        /* --- PÁGINA 5: DICTAMEN (5 MATERIAS) --- */
+        /* --- PÁGINA 5: DICTAMEN (DISTRIBUIDO Y ROBUSTO) --- */
         .analysis-page { padding: 2cm; justify-content: space-between; }
-        .analysis-container { flex-grow: 1; display: flex; flex-direction: column; gap: 15px; justify-content: center; }
+        /* GAP AUMENTADO para llenar la página */
+        .analysis-container { flex-grow: 1; display: flex; flex-direction: column; gap: 25px; justify-content: center; margin: 20px 0; }
         
         .analysis-item { 
-            background: #fff; border: 1px solid #e2e8f0; padding: 15px 20px; 
-            border-radius: 8px; border-left: 6px solid; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            background: #fff; border: 1px solid #e2e8f0; padding: 20px 25px; 
+            border-radius: 8px; border-left: 6px solid; box-shadow: var(--shadow-pro);
         }
-        .analysis-item h3 { margin: 0 0 5px 0; font-size: 12px; color: var(--c-dark); text-transform: uppercase; font-weight: 800; }
-        .analysis-text { font-size: 11px; line-height: 1.6; color: #475569; text-align: justify; margin: 0; }
+        .analysis-item h3 { margin: 0 0 8px 0; font-size: 12px; color: var(--c-dark); text-transform: uppercase; font-weight: 800; }
+        .analysis-text { font-size: 11px; line-height: 1.7; color: #475569; text-align: justify; margin: 0; }
 
-        /* Bordes de colores por materia */
         .bor-lec { border-left-color: var(--c-blue); }
         .bor-mat { border-left-color: var(--risk); }
         .bor-soc { border-left-color: var(--warn); }
         .bor-cie { border-left-color: var(--safe); }
         .bor-ing { border-left-color: var(--c-gold); }
 
-        .legal-footer { text-align: center; font-size: 9px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 15px; margin-top: auto; font-family: monospace; }
+        /* Pie de página técnico */
+        .legal-footer { 
+            text-align: center; font-size: 9px; color: #94a3b8; 
+            border-top: 1px solid #e2e8f0; padding-top: 15px; margin-top: auto; 
+            font-family: monospace; letter-spacing: 0.5px;
+        }
 
         /* --- IMPRESIÓN --- */
         @media print {
-            @page { margin: 0; size: Letter; } /* TAMAÑO CARTA */
+            @page { margin: 0; size: Letter; } 
             body { background: white; padding: 0; gap: 0; }
-            
             .page { 
-                margin: 0; width: 21.59cm; height: 27.94cm; /* Carta */
+                margin: 0; width: 21.59cm; height: 27.94cm; 
                 box-shadow: none; page-break-after: always; break-inside: avoid; overflow: hidden;
             }
-            
-            /* LA TABLA PUEDE CRECER Y SALTAR */
             .matrix-page { height: auto !important; min-height: 27.94cm; overflow: visible !important; }
-            
             .page:last-child { page-break-after: auto; }
             .fab-print { display: none; }
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
@@ -298,7 +294,7 @@
 
         <div class="legal-footer">
             CERTIFICADO DE AUTENTICIDAD DIGITAL • HASH: <span id="v-hash">---</span><br>
-            SISTEMA DE GESTIÓN DE CALIDAD QUIJANO V.66
+            SISTEMA DE GESTIÓN DE CALIDAD QUIJANO V.67 • ISO 9001 COMPLIANT
         </div>
     </div>
 
@@ -306,7 +302,6 @@
 
     <script>
         // --- SIMULACIÓN MASIVA (40 ALUMNOS para probar salto) ---
-        // Cuando lo conectes a Sheets, borra este bloque y usa el real.
         const base = [
             { name: "AGUIRRE DAVILA DANA", l:71, m:68, s:70, c:75, i:80, g:364 },
             { name: "ANACONA BOLAÑOS ANDRES", l:65, m:45, s:60, c:55, i:45, g:270 },
@@ -357,7 +352,7 @@
         new Chart(document.getElementById('barChart'), {
             type: 'bar',
             data: {
-                labels: ['LECTURA', 'SOCIALES', 'CIENCIAS', 'MATEMÁTICAS', 'INGLÉS'],
+                labels: ['LECTURA', 'SOCIALES', 'CIENCIAS', 'INGLÉS', 'MATEMÁTICAS'],
                 datasets: [{
                     data: [avg.l, avg.s, avg.c, avg.m, avg.i],
                     backgroundColor: [getBarColor(avg.l), getBarColor(avg.s), getBarColor(avg.c), getBarColor(avg.m), getBarColor(avg.i)],
